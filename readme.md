@@ -1,5 +1,5 @@
 # ccdb:  The cmd game engine  
-
+(Thats also multi threaded)  
 
 # How to use  
 
@@ -11,7 +11,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
 ```rust
 
 extern crate ccdb;
-use ccdb::banana::{core,screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them 
+use ccdb::core::{core,screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them 
 use ccdb::loader::load;// this is the loader which makes it so you can load a map from file
 use ccdb::keyin; // For key input
 use ccdb::cursor; // for moving the cursor
@@ -27,7 +27,10 @@ pub fn main() {
         name: "Test project".to_string(), // name of the project 
         desc: " - A test project".to_string(), // descirption (short )
         linelenght: 20,// how many charecters per line
-        lines: 4 // how many lines
+        lines: 4, // how many lines
+        debug: true, // This will make it so that CCDB (VERSION) is not shown
+        threads: 2, // How many threads 
+        delay: 1,// delay between threads ( So that they print in the correct order)
     };
     
     
@@ -55,8 +58,15 @@ pub fn main() {
   
 }
 ```
-## Differance between banana and core  
-Core is slower banana is faster but more of a testbench   
+## Differance between oldcore and core  
+Core is mutli threaded and does not work very efficiently with big amount of text  
+oldcore is the old algorithm for making the text   
+
+# Multi threading  
+If you want to use multi threading you have to use Core  
+Using more than 2 threads is not really recomended  
+The amount of threads cannot be odd  
+If you have more threads than lines the program will crash  
 
 # Contributing  
 If you have linux it would be nice if you could test the keyin and cursor libraries to see if they will work on linux!  

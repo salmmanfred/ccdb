@@ -1,23 +1,23 @@
-
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
-use crate::colour;
-use crate::cursor;
-//this is the core used for things like declaring the line lenght and amount of lines
+
+// core cort and screen is the same as in banana
+
 pub struct core{
     pub name: String,
     pub desc: String,
     pub linelenght: i64,
-    pub lines: i64
+    pub lines: i64,
+    pub debug: bool,
+    pub threads: i8,
+    pub delay: i64,
 }
-// this is what core "compiles" into so that the core can use the data easier
 pub struct cort{
     FCXO: String,
     v: i64,
     BLOCKXLINE: i64,
     LINES: i64,
-    // prevmap is used so you dont render the same thing more than once saving some cpu usage
     prevmap: loader::map,
     
 }
@@ -26,15 +26,13 @@ PREVX: Vec<i64>,
     PREVY: Vec<i64>,
     PREVG: Vec<String>,
     */
-// screen is the screen which stores the current map data
+
 pub struct screen{
     pub chars: Vec<String>,
     pub x: Vec<i64>,
     pub y: Vec<i64>,
     pub delay: u64,
-    
 }
-// used for the set up of cort 
 impl core{
     pub fn setup(&self)->cort{
 
@@ -47,7 +45,9 @@ impl core{
         let xx = &self.name.to_string();
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
-        xxs.push_str(" CCDB BANANA ALPHA");
+        if self.debug{
+            xxs.push_str(" CCDB V001 ALPHA");
+        }
         //println!("{}",xxs);
         cort{
             FCXO: xxs,
@@ -84,7 +84,7 @@ impl cort{
         if self.equall(screen.gmap()){
 
         }else{
-
+            // sends it to the screen for render
             println!("{}",self.FCXO);
         
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE);
@@ -94,39 +94,77 @@ impl cort{
     }
 }
 impl screen{
-
-    
     pub fn run(&self, size: i64,size2: i64) -> loader::map{
-       
-        //parses the data correctly so that it gets outputed correctly
-        for y in 0..size{
-            for x in 0..size2{
-                let mut charo = " ".to_string();
-                for o in 0..self.chars.len(){
-                    if x == self.x[o] && y == self.y[o]{
-                        charo = self.chars[o].to_string();
-                    }
+        for sx in 0..size{
+            let mut betterx:Vec<i64> = Vec::new();
+            let mut bettern:Vec<String> = Vec::new();
+            //betterx.remove()
+            // splits it into the correct y section
+            for x in 0..self.chars.len(){
+                if sx == self.y[x]{
+                    betterx.push(self.x[x]);
+                    bettern.push(self.chars[x].clone());
+                    
                 }
-                print!("{}",charo);
 
             }
-            println!("");
+            // makes the line and prints it 
+            println!("{}",self.makeline(betterx,bettern,size2));
+
         }
-       
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),
             chars: self.chars.clone(),
         }
     }
+    pub fn makeline(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{
+        let mut vc: Vec<&str> = Vec::new();
+        // really complicated version of what was in banana
+        for i in 0..size{
+            let masi = i;
+            let mut rus = 1;
+            let mut run = true;
+            for i in 0..betterx.len(){
+                
+                    if betterx[i] == masi{
+                        vc.push(&bettern[i]);
+                        rus = 0;
+                        break;
+                    }
+
+            }
+            if run{
+                if rus == 1{
+                    vc.push(" ");
+        
+                }
+                if i == 0{
+                    vc.push("");
+        
+                }/*else if i == size-1{
+        
+                    vc.push("");
+                    break;
+        
+                }*/
+            }
+               
     
+    
+        }
+        vc.into_iter().collect::<String>()
+
+    }
     pub fn loadmap(&mut self, map:loader::map){
+        // loads the map into the screen
         self.x = map.x;
         self.y = map.y;
         self.chars = map.chars;
 
     }
-    fn gmap(&self)->loader::map{
+    pub fn gmap(&self)->loader::map{
+        // makes the data in the screen into a map
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),

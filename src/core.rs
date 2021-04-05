@@ -1,21 +1,31 @@
+
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
-
-// core cort and screen is the same as in banana
-
+use crate::colour;
+use crate::check::{threadCheck};
+//use std::sync::{Mutex, Arc};
+//use crate::messages::{message,listen};
+//this is the core used for things like declaring the line lenght and amount of lines
 pub struct core{
     pub name: String,
     pub desc: String,
     pub linelenght: i64,
-    pub lines: i64
+    pub lines: i64,
+    pub debug: bool,
+    pub threads: i8,
+    pub delay: i64,
 }
+// this is what core "compiles" into so that the core can use the data easier
 pub struct cort{
     FCXO: String,
     v: i64,
     BLOCKXLINE: i64,
     LINES: i64,
+    // prevmap is used so you dont render the same thing more than once saving some cpu usage
     prevmap: loader::map,
+    thr: i8,
+    stb: i64,
     
 }
 /*
@@ -23,13 +33,15 @@ PREVX: Vec<i64>,
     PREVY: Vec<i64>,
     PREVG: Vec<String>,
     */
-
+// screen is the screen which stores the current map data
 pub struct screen{
     pub chars: Vec<String>,
     pub x: Vec<i64>,
     pub y: Vec<i64>,
     pub delay: u64,
+    
 }
+// used for the set up of cort 
 impl core{
     pub fn setup(&self)->cort{
 
@@ -42,8 +54,12 @@ impl core{
         let xx = &self.name.to_string();
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
-        xxs.push_str(" CCDB V001 ALPHA");
+        if self.debug{
+            xxs.push_str(" CCDB BANANA ALPHA");
+
+        }
         //println!("{}",xxs);
+        threadCheck(self.threads, self.lines);
         cort{
             FCXO: xxs,
             v: 1,
@@ -53,7 +69,9 @@ impl core{
                 x: Vec::new(),
                 y: Vec::new(),
                 chars: Vec::new(),
-            }
+            },
+            thr: self.threads,
+            stb: self.delay,
         }
     }
     
@@ -76,90 +94,117 @@ impl cort{
         
         thread::sleep(time::Duration::from_millis(screen.delay));
 
+        println!("{}",self.FCXO);
+        
+        self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);
         if self.equall(screen.gmap()){
 
         }else{
-            // sends it to the screen for render
-            println!("{}",self.FCXO);
-        
-            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE);
+
+           
 
         }
 
     }
 }
 impl screen{
-    pub fn run(&self, size: i64,size2: i64) -> loader::map{
-        for sx in 0..size{
-            let mut betterx:Vec<i64> = Vec::new();
-            let mut bettern:Vec<String> = Vec::new();
-            //betterx.remove()
-            // splits it into the correct y section
-            for x in 0..self.chars.len(){
-                if sx == self.y[x]{
-                    betterx.push(self.x[x]);
-                    bettern.push(self.chars[x].clone());
-                    
-                }
 
+    
+    pub fn run(&self, size: i64,size2: i64,thr:i8,stb:i64) -> loader::map{
+        // = Vec::with_capacity(10);
+        //parses the data correctly so that it gets outputed correctly
+        let mut aot = 0;
+        let mut sso = 0;
+        
+            //let (tx, rx) = mpsc::channel();
+            aot += 1;
+            
+
+                let mut hands: Vec<std::thread::JoinHandle<()>> = Vec::new();
+
+
+                let mut prev = 0;
+
+        
+        for P in 0..thr as i64{
+            sso += 1;
+            let chars = self.chars.clone();
+            let xx = self.x.clone();
+            let yy = self.y.clone();
+            let mut chunky1 = 0;
+            let mut tsize = size;
+            let stb2 = stb;
+            if size % 2 != 0{
+                tsize += 1;
             }
-            // makes the line and prints it 
-            println!("{}",self.makeline(betterx,bettern,size2));
+            if P > 0{
+                
+                chunky1 = prev+tsize/thr as i64;
+                prev = chunky1;
+            }
+            //let prvthr = &prvth.to_owned();
+                
 
+            
+            let chunky2 = chunky1+tsize/thr as i64;
+
+
+          
+                  
+            hands.push(thread::spawn( move|| {
+                
+                let mut fchunk = "".to_string();
+                for y in chunky1..chunky2{
+                let mut row = "".to_string();
+                    for x in 0..size2{
+                        let mut charo = " ".to_string();
+                        for o in 0..chars.len(){
+                            if x == xx[o] && y == yy[o]{
+                                charo = chars[o].to_string();
+                            }
+                        }
+                        row.push_str(&format!("{}",charo));
+                    
+                    }
+                fchunk.push_str(&format!("{}\n",row));
+                }
+                if P >= 1{
+                thread::sleep(time::Duration::from_nanos(stb2 as u64));
+               
+                }
+                print!("{}",fchunk);
+                   
+            }));
+            
         }
+                
+            //}
+                //hands.push(thr);
+        for thr in hands{
+            thr.join().unwrap();  
+        } 
+            
+
+            
+            //println!("");
+        
+       
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),
             chars: self.chars.clone(),
         }
     }
-    pub fn makeline(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{
-        let mut vc: Vec<&str> = Vec::new();
-        // really complicated version of what was in banana
-        for i in 0..size{
-            let masi = i;
-            let mut rus = 1;
-            let mut run = true;
-            for i in 0..betterx.len(){
-                
-                    if betterx[i] == masi{
-                        vc.push(&bettern[i]);
-                        rus = 0;
-                        break;
-                    }
 
-            }
-            if run{
-                if rus == 1{
-                    vc.push(" ");
-        
-                }
-                if i == 0{
-                    vc.push("");
-        
-                }/*else if i == size-1{
-        
-                    vc.push("");
-                    break;
-        
-                }*/
-            }
-               
-    
-    
-        }
-        vc.into_iter().collect::<String>()
 
-    }
+    
     pub fn loadmap(&mut self, map:loader::map){
-        // loads the map into the screen
         self.x = map.x;
         self.y = map.y;
         self.chars = map.chars;
 
     }
-    pub fn gmap(&self)->loader::map{
-        // makes the data in the screen into a map
+    fn gmap(&self)->loader::map{
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),

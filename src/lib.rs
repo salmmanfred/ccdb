@@ -1,5 +1,5 @@
+pub mod oldcore;
 pub mod core;
-pub mod banana;
 
 #[path = "libs/keyin.rs"]pub mod keyin;
 
@@ -8,4 +8,4 @@ pub mod banana;
 #[path = "map/loader.rs"]pub mod loader;
 
 #[path = "misc/colour.rs"]pub mod colour;
-
+#[path = "misc/check.rs"]pub mod check;
