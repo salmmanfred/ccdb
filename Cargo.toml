@@ -6,6 +6,10 @@ edition = "2018"
 links = "./src/c/"
 build = "./src/build.rs"
 license = "MIT"
+repository = "https://github.com/salmmanfred/ccdb"
+description = "A small terminal based game engine"
+readme = "README.md"
+keywords = ["gamedev", "graphics","multithreading","engine"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
