@@ -211,6 +211,24 @@ impl screen{
             chars: self.chars.clone()
         }
     }
+    pub fn findX(&self, ch: String) -> i64{
+        for x in 0..self.chars.len(){
+            if self.chars[x] == ch{
+                return x as i64
+            }
+        }
+        0
+
+    }
+    pub fn findAllOfX(&self, ch: String) -> Vec<i64>{
+        let mut all: Vec<i64> = Vec::new();
+        for x in 0..self.chars.len(){
+            if self.chars[x] == ch{
+                all.push(x as i64);
+            }
+        }
+        all
+    }
 }
 
 

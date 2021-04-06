@@ -1,11 +1,11 @@
 # ccdb:  The cmd game engine  
 (Thats also multi threaded)  
-
+  
 # How to use  
-
+  
 SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these are made in C)  
-
-
+  
+  
 ## Learn how to use it by example  
 
 ```rust
@@ -43,7 +43,7 @@ pub fn main() {
     
     let mut a = x.setup(); // set up the core struct 
     f.loadmap(load("./maps/map.rmap")); // loads in the map
-
+    let player = f.findX("@".to_string()); // gets the player position in the screen.chars section findAllOfX works the same but returns a vector 
   
     
     loop {
@@ -57,16 +57,28 @@ pub fn main() {
 
   
 }
-```
+```  
 ## Differance between oldcore and core  
 Core is mutli threaded and does not work very efficiently with big amount of text  
 oldcore is the old algorithm for making the text   
-
+  
 # Multi threading  
 If you want to use multi threading you have to use Core  
 Using more than 2 threads is not really recomended  
 The amount of threads cannot be odd  
 If you have more threads than lines the program will crash  
-
+  
 # Contributing  
 If you have linux it would be nice if you could test the keyin and cursor libraries to see if they will work on linux!  
+  
+# Roadmap  
+v0.2.0: Add a function to find all of a certain character or just the first one  
+v0.3.0: Being able to get the output in a string instead of the cmd   
+v0.4.0: Physics and collision  
+v0.5.0: Loading of ascii sprites from file  
+v0.6.0: No plans  
+v0.7.0: No plans  
+v0.8.0: No plans  
+v0.9.0: No plans  
+v1.0.0: No plans  
+
