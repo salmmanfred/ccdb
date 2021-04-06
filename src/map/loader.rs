@@ -38,3 +38,14 @@ pub fn loadvec(file: Vec<String>) -> map{
         y:y,
     }
 }
+pub fn toMap(str: String)-> map{
+    let sttr = str;
+    let mut vecStr: Vec<String> = Vec::new();
+    let vecsttr: Vec<&str> = sttr.split("\n").collect();
+    for x in vecsttr{
+        vecStr.push(x.to_string());
+
+    }
+
+    loadvec(vecStr)
+}

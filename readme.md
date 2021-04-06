@@ -12,7 +12,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
 
 extern crate ccdb;
 use ccdb::core::{core,screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them 
-use ccdb::loader::load;// this is the loader which makes it so you can load a map from file
+use ccdb::loader::{load,toMap};// this is the loader which makes it so you can load a map from file or load a map from string 
 use ccdb::keyin; // For key input
 use ccdb::cursor; // for moving the cursor
 
@@ -44,7 +44,8 @@ pub fn main() {
     let mut a = x.setup(); // set up the core struct 
     f.loadmap(load("./maps/map.rmap")); // loads in the map
     let player = f.findX("@".to_string()); // gets the player position in the screen.chars section findAllOfX works the same but returns a vector 
-  
+    f.loadmap(toMap("#####\n33333".to_string()));//if you want to make a map out of a string 
+    
     
     loop {
         
