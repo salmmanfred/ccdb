@@ -50,12 +50,12 @@ impl core{
         
 
     }
-    fn setup001(&self)-> cort{
+    fn setup001(&self)-> cort{ // compiles core into cort where data and meta data is stored 
         let xx = &self.name.to_string();
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB BANANA ALPHA");
+            xxs.push_str(" CCDB CORE ALPHA V0.2.0");
 
         }
         //println!("{}",xxs);
@@ -81,7 +81,7 @@ impl cort{
     fn equall(&self, map: loader::map)-> bool{
 
         if self.prevmap.x == map.x && self.prevmap.y == map.y && self.prevmap.chars == map.chars {
-            return true
+            return true  // checks if the screen and a map is the same 
         }
 
 
@@ -96,12 +96,8 @@ impl cort{
 
         println!("{}",self.FCXO);
         
-        self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);
-        if self.equall(screen.gmap()){
-
-        }else{
-
-           
+        if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
+            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);  // starts the screen rendering 
 
         }
 
@@ -120,14 +116,14 @@ impl screen{
             aot += 1;
             
 
-                let mut hands: Vec<std::thread::JoinHandle<()>> = Vec::new();
+        let mut hands: Vec<std::thread::JoinHandle<()>> = Vec::new();  //stores the threads
 
 
-                let mut prev = 0;
+        let mut prev = 0;
 
         
         for P in 0..thr as i64{
-            sso += 1;
+            sso += 1;// creates all the variables 
             let chars = self.chars.clone();
             let xx = self.x.clone();
             let yy = self.y.clone();
@@ -137,21 +133,17 @@ impl screen{
             if size % 2 != 0{
                 tsize += 1;
             }
-            if P > 0{
+            if P > 0{                           // calculates the chunk 
                 
                 chunky1 = prev+tsize/thr as i64;
                 prev = chunky1;
             }
-            //let prvthr = &prvth.to_owned();
-                
-
-            
             let chunky2 = chunky1+tsize/thr as i64;
 
 
           
                   
-            hands.push(thread::spawn( move|| {
+            hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
                 
                 let mut fchunk = "".to_string();
                 for y in chunky1..chunky2{
@@ -163,13 +155,13 @@ impl screen{
                                 charo = chars[o].to_string();
                             }
                         }
-                        row.push_str(&format!("{}",charo));
+                        row.push_str(&format!("{}",charo));  // push it together to a single line
                     
                     }
                 fchunk.push_str(&format!("{}\n",row));
                 }
                 if P >= 1{
-                thread::sleep(time::Duration::from_nanos(stb2 as u64));
+                thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
                
                 }
                 print!("{}",fchunk);
@@ -181,7 +173,7 @@ impl screen{
             //}
                 //hands.push(thr);
         for thr in hands{
-            thr.join().unwrap();  
+            thr.join().unwrap();  // join all threads
         } 
             
 
@@ -189,7 +181,7 @@ impl screen{
             //println!("");
         
        
-        loader::map{
+        loader::map{// returns the current map of screen to be put in prevmap.
             x: self.x.clone(),
             y: self.y.clone(),
             chars: self.chars.clone(),
@@ -198,20 +190,20 @@ impl screen{
 
 
     
-    pub fn loadmap(&mut self, map:loader::map){
+    pub fn loadmap(&mut self, map:loader::map){ // for loading a map into the screen
         self.x = map.x;
         self.y = map.y;
         self.chars = map.chars;
 
     }
-    fn gmap(&self)->loader::map{
+    fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),
             chars: self.chars.clone()
         }
     }
-    pub fn findX(&self, ch: String) -> i64{
+    pub fn findX(&self, ch: String) -> i64{ // for finding a character 
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{
                 return x as i64
@@ -220,7 +212,7 @@ impl screen{
         0
 
     }
-    pub fn findAllOfX(&self, ch: String) -> Vec<i64>{
+    pub fn findAllOfX(&self, ch: String) -> Vec<i64>{ // returns a vector of the position of all instanses of a certain character
         let mut all: Vec<i64> = Vec::new();
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{

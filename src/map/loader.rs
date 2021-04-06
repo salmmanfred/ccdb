@@ -7,7 +7,7 @@ pub struct map{
 // this parses a text file into a map 
 
 pub fn load(filename: &str) -> map{
-    let file = openfile::readFileLines(filename);
+    let file = openfile::readFileLines(filename); // calls and returns what loadvec does
     loadvec(file)
 }
 pub fn loadvec(file: Vec<String>) -> map{
@@ -38,7 +38,7 @@ pub fn loadvec(file: Vec<String>) -> map{
         y:y,
     }
 }
-pub fn toMap(str: String)-> map{
+pub fn toMap(str: String)-> map{ //makes a string into a map 
     let sttr = str;
     let mut vecStr: Vec<String> = Vec::new();
     let vecsttr: Vec<&str> = sttr.split("\n").collect();
