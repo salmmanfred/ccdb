@@ -11,7 +11,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
 ```rust
 
 extern crate ccdb;
-use ccdb::core::{core,screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them 
+use ccdb::acore::{core,screen}; // there are 2 diffrent Acores there is Acore and there is banana both work the same way when talking to them 
 use ccdb::loader::{load,toMap};// this is the loader which makes it so you can load a map from file or load a map from string 
 use ccdb::keyin; // For key input
 use ccdb::cursor; // for moving the cursor
@@ -23,7 +23,7 @@ pub fn main() {
     cursor::hideCursor(); // hides the cursor
     
 
-    let x = core{
+    let x = Acore{
         name: "Test project".to_string(), // name of the project 
         desc: " - A test project".to_string(), // descirption (short )
         linelenght: 20,// how many charecters per line
@@ -41,7 +41,7 @@ pub fn main() {
         delay: 10,// delay between each frame for extra bonus use 100 ms
     };
     
-    let mut a = x.setup(); // set up the core struct 
+    let mut a = x.setup(); // set up the Acore struct 
     f.loadmap(load("./maps/map.rmap")); // loads in the map
     let player = f.findX("@".to_string()); // gets the player position in the screen.chars section findAllOfX works the same but returns a vector 
     f.loadmap(toMap("#####\n33333".to_string()));//if you want to make a map out of a string 
@@ -51,6 +51,7 @@ pub fn main() {
         
         cursor::clear();// clear the screen
         a.render(&f);// renders it all
+        println!("{}",a.render(&f));// if you are using Bcore the output gets output in a string ( Does not work with Acore )
         
       
 
@@ -59,12 +60,13 @@ pub fn main() {
   
 }
 ```  
-## Differance between oldcore and core  
+## Differance between Bcore and Acore  
 Core is mutli threaded and does not work very efficiently with big amount of text  
-oldcore is the old algorithm for making the text   
+Bcore is the old algorithm for making the text  
+Their names are Acore: Banana core, Bcore: Olive core  
   
 # Multi threading  
-If you want to use multi threading you have to use Core  
+If you want to use multi threading you have to use Acore  
 Using more than 2 threads is not really recomended  
 The amount of threads cannot be odd  
 If you have more threads than lines the program will crash  
@@ -73,11 +75,11 @@ If you have more threads than lines the program will crash
 If you have linux it would be nice if you could test the keyin and cursor libraries to see if they will work on linux!  
   
 # Roadmap  
-v0.2.0: Add a function to find all of a certain character or just the first one  
-v0.3.0: Being able to get the output in a string instead of the cmd   
+v0.2.0: Add a function to find all of a certain character or just the first one  DONE  
+v0.3.0: Being able to get the output in a string instead of the cmd   DONE  
 v0.4.0: Physics and collision  
 v0.5.0: Loading of ascii sprites from file  
-v0.6.0: No plans  
+v0.6.0: Key input rework  
 v0.7.0: No plans  
 v0.8.0: No plans  
 v0.9.0: No plans  

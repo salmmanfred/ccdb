@@ -1,4 +1,4 @@
-
+//! Banana core 
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
@@ -55,7 +55,7 @@ impl core{
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB CORE ALPHA V0.2.0");
+            xxs.push_str(" CCDB ACORE ALPHA");
 
         }
         //println!("{}",xxs);
@@ -87,7 +87,7 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &screen){
+    pub fn render(&mut self, screen: &screen)-> String{
 
        // println!("■".green())
         
@@ -100,6 +100,7 @@ impl cort{
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);  // starts the screen rendering 
 
         }
+        "IMPORTANT ONLY OLIVE CORE(OLD CORE) SUPPORTS OUTPUT TO STRING ".to_string()
 
     }
 }

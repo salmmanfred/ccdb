@@ -1,5 +1,8 @@
-pub mod oldcore;
-pub mod core;
+// Olive core
+pub mod bcore;
+
+// Banana core
+pub mod acore;
 
 #[path = "libs/keyin.rs"]pub mod keyin;
 

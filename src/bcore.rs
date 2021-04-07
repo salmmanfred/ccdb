@@ -1,3 +1,4 @@
+//! Olive core
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
@@ -19,6 +20,7 @@ pub struct cort{
     BLOCKXLINE: i64,
     LINES: i64,
     prevmap: loader::map,
+    renderd: String,
     
 }
 /*
@@ -46,7 +48,7 @@ impl core{
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB V001 ALPHA");
+            xxs.push_str(" CCDB BCORE ALPHA");
         }
         //println!("{}",xxs);
         cort{
@@ -58,7 +60,8 @@ impl core{
                 x: Vec::new(),
                 y: Vec::new(),
                 chars: Vec::new(),
-            }
+            },
+            renderd: "".to_string(),
         }
     }
     
@@ -74,7 +77,7 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &screen){
+    pub fn render(&mut self, screen: &screen) -> String{
 
        // println!("■".green())
         
@@ -87,14 +90,20 @@ impl cort{
             // sends it to the screen for render
             println!("{}",self.FCXO);
         
-            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE);
+            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE, self);
 
         }
+         self.renderd.clone()
 
+    }
+    fn prvrend(&mut self, f: String){
+        self.renderd = f;
     }
 }
 impl screen{
-    pub fn run(&self, size: i64,size2: i64) -> loader::map{
+    pub fn run(&self, size: i64,size2: i64, cort: &mut cort) -> loader::map{
+        let mut line: String = "".to_string();
+
         for sx in 0..size{
             let mut betterx:Vec<i64> = Vec::new();
             let mut bettern:Vec<String> = Vec::new();
@@ -109,9 +118,10 @@ impl screen{
 
             }
             // makes the line and prints it 
-            println!("{}",self.makeline(betterx,bettern,size2));
+            line.push_str(&format!("{}\n",&self.makeline(betterx,bettern,size2)));
 
         }
+        cort.prvrend(line);
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),
