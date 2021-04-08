@@ -90,10 +90,10 @@ If you have linux it would be nice if you could test the keyin and cursor librar
 v0.2.0: Add a function to find all of a certain character or just the first one  DONE  
 v0.3.0: Being able to get the output in a string instead of the cmd   DONE  
 v0.4.0: Physics and collision  DONE  
-v0.5.0: Loading of ascii sprites from file  
+v0.5.0: Loading of ascii sprites from file  DONE  
 v0.6.0: Key input rework  
 v0.7.0: Rework of variable names and function names  
 v0.8.0: No plans  
-v0.9.0: No plans  
+v0.9.0: Getting the code ready for 1.0.0  
 v1.0.0: No plans  
 
