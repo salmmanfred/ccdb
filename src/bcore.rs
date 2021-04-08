@@ -3,6 +3,8 @@ use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
 use crate::physics;
+use crate::sprite;
+
 
 // core cort and screen is the same as in banana
 
@@ -37,6 +39,8 @@ pub struct screen{
     pub x: Vec<i64>,
     pub y: Vec<i64>,
     pub delay: u64,
+    pub sprite: Vec<sprite::sprite>,
+
 }
 impl core{
     pub fn setup(&self)->cort{
@@ -119,23 +123,39 @@ impl cort{
             self.removephys(x);
         }
     }
+    pub fn changePhysics(&mut self, grav: i64){
+        self.gravity = grav;
+    }
 }
 impl screen{
     pub fn run(&self, size: i64,size2: i64, cort: &mut cort) -> loader::map{
         let mut line: String = "".to_string();
+        let mut X = self.x.clone();// load in a sprite
+        let mut Y = self.y.clone();
+        let mut C = self.chars.clone();
+
+        for x in 0..self.sprite.len(){// does the actually loading 
+            C.extend(self.sprite[x].chars.clone());
+            X.extend(self.sprite[x].x.clone());
+            Y.extend(self.sprite[x].y.clone());
+        }
 
         for sx in 0..size{// splits everything into a bunch of X lines then calls make line to make said x lines 
             let mut betterx:Vec<i64> = Vec::new();
             let mut bettern:Vec<String> = Vec::new();
             //betterx.remove()
             // splits it into the correct y section
-            for x in 0..self.chars.len(){
-                if sx == self.y[x]{
-                    betterx.push(self.x[x]);
-                    bettern.push(self.chars[x].clone());
+            for x in 0..C.len(){
+                if sx == Y[x]{
+                    betterx.push(X[x]);
+                    bettern.push(C[x].clone());
                     
                 }
 
+            }
+            for x in 0..self.sprite.len(){
+                if self.sprite[x].y[x] == sx{
+                }
             }
             // makes the line and prints it 
             line.push_str(&format!("{}\n",&self.makeline(betterx,bettern,size2)));
@@ -143,9 +163,9 @@ impl screen{
         }
         cort.prvrend(line);
         loader::map{
-            x: self.x.clone(),
-            y: self.y.clone(),
-            chars: self.chars.clone(),
+            x: X.clone(),
+            y: Y.clone(),
+            chars: C.clone(),
         }
     }
     pub fn makeline(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{

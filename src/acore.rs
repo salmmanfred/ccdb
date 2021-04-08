@@ -5,6 +5,8 @@ use crate::loader;
 use crate::colour;
 use crate::check::{threadCheck};
 use crate::physics;
+use crate::sprite;
+
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 //this is the core used for things like declaring the line lenght and amount of lines
@@ -43,6 +45,7 @@ pub struct screen{
     pub x: Vec<i64>,
     pub y: Vec<i64>,
     pub delay: u64,
+    pub sprite: Vec<sprite::sprite>,
     
 }
 // used for the set up of cort 
@@ -108,7 +111,7 @@ impl cort{
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);  // starts the screen rendering 
 
         }
-        if self.debug{
+        if self.debug{// if debug is on then show a warning message 
             return "IMPORTANT ONLY OLIVE CORE(OLD CORE) SUPPORTS OUTPUT TO STRING ".to_string()
         }else{
             return "".to_string()
@@ -153,13 +156,24 @@ impl screen{
 
 
         let mut prev = 0;
+        let mut charss = self.chars.clone();
+        let mut xxx = self.x.clone();
+        let mut yyy = self.y.clone();
+        
+        for x in 0..self.sprite.len(){//appends the sprite 
+            charss.extend(self.sprite[x].chars.clone());
+            xxx.extend(self.sprite[x].x.clone());
+            yyy.extend(self.sprite[x].y.clone());
+
+        }
+        
 
         
         for P in 0..thr as i64{
             sso += 1;// creates all the variables 
-            let chars = self.chars.clone();
-            let xx = self.x.clone();
-            let yy = self.y.clone();
+            let mut chars = charss.clone();
+            let mut xx = xxx.clone();
+            let mut yy = yyy.clone();
             let mut chunky1 = 0;
             let mut tsize = size;
             let stb2 = stb;
@@ -215,7 +229,7 @@ impl screen{
         
        
         loader::map{// returns the current map of screen to be put in prevmap.
-            x: self.x.clone(),
+            x: self.y.clone(),
             y: self.y.clone(),
             chars: self.chars.clone(),
         }
@@ -254,6 +268,8 @@ impl screen{
         }
         all
     }
+
+    
 }
 
 

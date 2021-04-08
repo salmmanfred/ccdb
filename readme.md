@@ -39,6 +39,8 @@ pub fn main() {
         x: vec!(1,2),
         y: vec!(1,2),
         delay: 10,// delay between each frame for extra bonus use 100 ms
+        sprite: Vec::new(),// the sprite vector contains all the sprites that are going to be renderd 
+
     };
     
     let mut a = x.setup(); // set up the Acore struct 
@@ -52,12 +54,15 @@ pub fn main() {
     a.addphysForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
     a.removephys(player); // remove physics form an object 
     a.changePhysics(-1); // change the gravity constant to make gravity stronger or weaker or upside down 
-
+    let mut sprite = sprite::load("./maps/sprite.rsp"); // loads the sprite from a text file 
+    f.sprite.push(sprite);//push the sprite to the sprite vector 
+    f.sprite[0].setxy(2,-2);//sets the position of the sprite 
     loop {
         
         cursor::clear();// clear the screen
         a.render(&mut f);// renders it all does not work with Bcore
         println!("{}",a.render(&mut f););// if you are using Bcore the output gets output in a string ( Does not work with Acore )
+        f.sprite[0].movexy(1, 0); // moves the sprite to the side 
         
       
 
