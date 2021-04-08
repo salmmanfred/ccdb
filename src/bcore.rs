@@ -2,6 +2,7 @@
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
+use crate::physics;
 
 // core cort and screen is the same as in banana
 
@@ -21,7 +22,9 @@ pub struct cort{
     LINES: i64,
     prevmap: loader::map,
     renderd: String,
-    
+    physobj: Vec<i64>,
+    debug: bool,
+    gravity: i64,
 }
 /*
 PREVX: Vec<i64>,
@@ -62,6 +65,9 @@ impl core{
                 chars: Vec::new(),
             },
             renderd: "".to_string(),
+            physobj: Vec::new(),
+            debug: self.debug,
+            gravity: 1,
         }
     }
     
@@ -77,21 +83,19 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &screen) -> String{
+    pub fn render(&mut self, screen: &mut screen) -> String{
 
        // println!("■".green())
         
         
         thread::sleep(time::Duration::from_millis(screen.delay));
+        physics::Brenderphys(screen, self.physobj.clone(),self.gravity);
+        println!("{}",self.FCXO);
 
-        if self.equall(screen.gmap()){
-
-        }else{
+        if !self.equall(screen.gmap()){
             // sends it to the screen for render
-            println!("{}",self.FCXO);
         
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE, self);
-
         }
          self.renderd.clone()
 
@@ -99,12 +103,28 @@ impl cort{
     fn prvrend(&mut self, f: String){
         self.renderd = f;
     }
+    pub fn addphys(&mut self,pos: i64){ // adds a object to be renderd for phycis later 
+        self.physobj.push(pos);
+    }
+    pub fn addphysForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
+        for x in screen.findAllOfX(chr){
+            self.physobj.push(x);
+        }
+    }
+    pub fn removephys(&mut self,pos: i64){
+        self.physobj.retain(|&x| x != pos);
+    }
+    pub fn removephysForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
+        for x in screen.findAllOfX(chr){
+            self.removephys(x);
+        }
+    }
 }
 impl screen{
     pub fn run(&self, size: i64,size2: i64, cort: &mut cort) -> loader::map{
         let mut line: String = "".to_string();
 
-        for sx in 0..size{
+        for sx in 0..size{// splits everything into a bunch of X lines then calls make line to make said x lines 
             let mut betterx:Vec<i64> = Vec::new();
             let mut bettern:Vec<String> = Vec::new();
             //betterx.remove()
@@ -131,11 +151,11 @@ impl screen{
     pub fn makeline(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{
         let mut vc: Vec<&str> = Vec::new();
         // really complicated version of what was in banana
-        for i in 0..size{
+        for i in 0..size{// size is the lenght of the entire line
             let masi = i;
             let mut rus = 1;
             let mut run = true;
-            for i in 0..betterx.len(){
+            for i in 0..betterx.len(){// finds the correct char? 
                 
                     if betterx[i] == masi{
                         vc.push(&bettern[i]);

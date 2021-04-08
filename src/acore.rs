@@ -4,6 +4,7 @@ use std::{thread, time};
 use crate::loader;
 use crate::colour;
 use crate::check::{threadCheck};
+use crate::physics;
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 //this is the core used for things like declaring the line lenght and amount of lines
@@ -26,6 +27,9 @@ pub struct cort{
     prevmap: loader::map,
     thr: i8,
     stb: i64,
+    physobj: Vec<i64>,
+    gravity: i64,
+    debug: bool,
     
 }
 /*
@@ -72,6 +76,9 @@ impl core{
             },
             thr: self.threads,
             stb: self.delay,
+            physobj: Vec::new(),
+            debug: self.debug,
+            gravity: 1,
         }
     }
     
@@ -87,7 +94,7 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &screen)-> String{
+    pub fn render(&mut self, screen: &mut screen)-> String{
 
        // println!("■".green())
         
@@ -95,14 +102,39 @@ impl cort{
         thread::sleep(time::Duration::from_millis(screen.delay));
 
         println!("{}",self.FCXO);
-        
+        physics::Arenderphys(screen, self.physobj.clone(),self.gravity);
         if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
+            
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);  // starts the screen rendering 
 
         }
-        "IMPORTANT ONLY OLIVE CORE(OLD CORE) SUPPORTS OUTPUT TO STRING ".to_string()
+        if self.debug{
+            return "IMPORTANT ONLY OLIVE CORE(OLD CORE) SUPPORTS OUTPUT TO STRING ".to_string()
+        }else{
+            return "".to_string()
+        }
 
     }
+    pub fn addphys(&mut self,pos: i64){// adds a object to be renderd for phycis later 
+        self.physobj.push(pos);
+    }
+    pub fn addphysForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
+        for x in screen.findAllOfX(chr){
+            self.physobj.push(x);
+        }
+    }
+    pub fn removephys(&mut self,pos: i64){ // removes physics from object
+        self.physobj.retain(|&x| x != pos);
+    }
+    pub fn removephysForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
+        for x in screen.findAllOfX(chr){
+            self.removephys(x);
+        }
+    }
+    pub fn changePhysics(&mut self, grav: i64){
+        self.gravity = grav;
+    }
+
 }
 impl screen{
 
@@ -197,7 +229,7 @@ impl screen{
         self.chars = map.chars;
 
     }
-    fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
+    pub fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
         loader::map{
             x: self.x.clone(),
             y: self.y.clone(),

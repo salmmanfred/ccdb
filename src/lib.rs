@@ -13,6 +13,11 @@ pub mod acore;
 #[path = "misc/colour.rs"]pub mod colour;
 #[path = "misc/check.rs"]pub mod check;
 
+#[path = "physics/physics.rs"]pub mod physics;
+#[path = "physics/col.rs"]pub mod col;
+
+
+
 
 
 
