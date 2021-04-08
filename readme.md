@@ -54,7 +54,7 @@ pub fn main() {
     a.addphysForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
     a.removephys(player); // remove physics form an object 
     a.changePhysics(-1); // change the gravity constant to make gravity stronger or weaker or upside down 
-    let mut sprite = sprite::load("./maps/sprite.rsp"); // loads the sprite from a text file 
+    let mut sprite = sprite::load("./maps/sprite.rsprite"); // loads the sprite from a text file 
     f.sprite.push(sprite);//push the sprite to the sprite vector 
     f.sprite[0].setxy(2,-2);//sets the position of the sprite 
     loop {
