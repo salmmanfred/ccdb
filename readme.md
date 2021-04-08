@@ -46,7 +46,7 @@ pub fn main() {
     f.loadmap(load("./maps/map.rmap")); // loads in the map
     let player = f.findX("@".to_string()); // gets the player position in the screen.chars section findAllOfX works the same but returns a vector 
     f.loadmap(toMap("#####\n33333".to_string()));//if you want to make a map out of a string 
-    
+
     //! physics stuff
     a.addphys(player); // adds phycis to an object 
     a.addphysForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
@@ -69,6 +69,7 @@ pub fn main() {
 ## Differance between Bcore and Acore  
 Core is mutli threaded and does not work very efficiently with big amount of text  
 Bcore is the old algorithm for making the text  
+Bcore also outputs into a string instead of into the console  
 Their names are Acore: Banana core, Bcore: Olive core  
   
 # Multi threading  
