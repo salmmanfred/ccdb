@@ -15,7 +15,7 @@ use ccdb::acore::{core,screen}; // there are 2 diffrent Acores there is Acore an
 use ccdb::loader::{load,toMap};// this is the loader which makes it so you can load a map from file or load a map from string 
 use ccdb::keyin; // For key input
 use ccdb::cursor; // for moving the cursor
-
+use ccdb::keycode; // for key codes (work in progress)
 
 pub fn main() {
     
@@ -31,6 +31,8 @@ pub fn main() {
         debug: true, // This will make it so that CCDB (VERSION) is not shown
         threads: 2, // How many threads 
         delay: 1,// delay between threads ( So that they print in the correct order)
+        output_string: false,// if you want the output to be in string form or if you want it to just print to the console
+
     };
     
     
@@ -38,7 +40,7 @@ pub fn main() {
         chars: vec!("0".to_string(),"1".to_string()), // these are the different ascii "items" that get renderd X and Y are the cordinates 
         x: vec!(1,2),
         y: vec!(1,2),
-        delay: 10,// delay between each frame for extra bonus use 100 ms
+        delay: 10,// delay between each frame for
         sprite: Vec::new(),// the sprite vector contains all the sprites that are going to be renderd 
 
     };
@@ -63,7 +65,27 @@ pub fn main() {
         a.render(&mut f);// renders it all does not work with Bcore
         println!("{}",a.render(&mut f););// if you are using Bcore the output gets output in a string ( Does not work with Acore )
         f.sprite[0].movexy(1, 0); // moves the sprite to the side 
+
+        if keyin::keydown(){ // checks if there is a keydown
+
         
+            match keyin::getkey(){// gets said keycode
+                97 =>{
+                    f.x[player as usize] -= 1;
+                }
+                100 =>{
+                    f.x[player as usize] += 1;
+                }
+                119 =>{
+                    f.y[player as usize] -= 1;
+                }
+                115 =>{
+                    f.y[player as usize] += 1;
+                }
+                _ =>{
+
+            }
+        }
       
 
     }
@@ -91,7 +113,7 @@ v0.2.0: Add a function to find all of a certain character or just the first one 
 v0.3.0: Being able to get the output in a string instead of the cmd   DONE  
 v0.4.0: Physics and collision  DONE  
 v0.5.0: Loading of ascii sprites from file  DONE  
-v0.6.0: Key input rework  
+v0.6.0: Key input rework  DONE (+ some rework to the acore)  
 v0.7.0: Rework of variable names and function names  
 v0.8.0: No plans  
 v0.9.0: Getting the code ready for 1.0.0  

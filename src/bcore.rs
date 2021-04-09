@@ -16,6 +16,8 @@ pub struct core{
     pub debug: bool,
     pub threads: i8,
     pub delay: i64,
+    pub output_string: bool,
+
 }
 pub struct cort{
     FCXO: String,
@@ -27,6 +29,8 @@ pub struct cort{
     physobj: Vec<i64>,
     debug: bool,
     gravity: i64,
+    output_string: bool,
+
 }
 /*
 PREVX: Vec<i64>,
@@ -72,6 +76,8 @@ impl core{
             physobj: Vec::new(),
             debug: self.debug,
             gravity: 1,
+            output_string: self.output_string,
+
         }
     }
     
@@ -101,7 +107,10 @@ impl cort{
         
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE, self);
         }
-         self.renderd.clone()
+        if !self.output_string{
+            println!("{}",self.renderd);
+        }
+        self.renderd.clone()
 
     }
     fn prvrend(&mut self, f: String){

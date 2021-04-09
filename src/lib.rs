@@ -6,6 +6,7 @@ pub mod acore;
 
 // ! libs
 #[path = "libs/keyin.rs"]pub mod keyin;
+#[path = "libs/keycode.rs"]pub mod keycode;
 #[path = "libs/cursor.rs"]pub mod cursor;
 
 // ! map

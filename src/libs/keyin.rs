@@ -13,9 +13,14 @@ pub fn call() -> usize{
     }
 }
 
-pub fn keydown() -> usize{
+pub fn keydown() -> bool{
     unsafe{
-        return keydownd()
+        if keydownd() == 1{
+            return true
+        }
+        else {
+            return false
+        }
     }
 }
 

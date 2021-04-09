@@ -19,6 +19,7 @@ pub struct core{
     pub debug: bool,
     pub threads: i8,
     pub delay: i64,
+    pub output_string: bool,
 }
 // this is what core "compiles" into so that the core can use the data easier
 pub struct cort{
@@ -33,7 +34,8 @@ pub struct cort{
     physobj: Vec<i64>,
     gravity: i64,
     debug: bool,
-    
+    renderd: String,
+    output_string: bool,
 }
 /*
 PREVX: Vec<i64>,
@@ -83,6 +85,8 @@ impl core{
             physobj: Vec::new(),
             debug: self.debug,
             gravity: 1,
+            renderd: "".to_string(),
+            output_string: self.output_string,
         }
     }
     
@@ -109,14 +113,15 @@ impl cort{
         physics::Arenderphys(screen, self.physobj.clone(),self.gravity);
         if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
             
-            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb);  // starts the screen rendering 
+            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb,self);  // starts the screen rendering 
 
         }
-        if self.debug{// if debug is on then show a warning message 
-            return "IMPORTANT ONLY OLIVE CORE(OLD CORE) SUPPORTS OUTPUT TO STRING ".to_string()
+        if self.output_string{
+            return self.renderd.clone()
         }else{
             return "".to_string()
         }
+        
 
     }
     pub fn addphys(&mut self,pos: i64){// adds a object to be renderd for phycis later 
@@ -143,7 +148,7 @@ impl cort{
 impl screen{
 
     
-    pub fn run(&self, size: i64,size2: i64,thr:i8,stb:i64) -> loader::map{
+    pub fn run(&self, size: i64,size2: i64,thr:i8,stb:i64,cort:&mut  cort) -> loader::map{
         // = Vec::with_capacity(10);
         //parses the data correctly so that it gets outputed correctly
         let mut aot = 0;
@@ -194,7 +199,7 @@ impl screen{
 
 
           
-                  
+                
             hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
                 
                 let mut fchunk = "".to_string();
@@ -213,13 +218,15 @@ impl screen{
                 fchunk.push_str(&format!("{}\n",row));
                 }
                 if P >= 1{
-                thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
-               
+                    thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
+                    
                 }
 
                 let mut data = data.lock().unwrap();
                 //print!("{}",fchunk);
                 data.push_str(&fchunk);
+                drop(data);
+
                 if P == threadsize as i64 - 1{
                     tx.send(()).unwrap();
                    // println!("\ndone{}{}",P,threadsize);
@@ -231,15 +238,20 @@ impl screen{
                 
             //}
                 //hands.push(thr);
-        let finals = rx.recv().unwrap();
 
         for thr in hands{
             thr.join().unwrap();  // join all threads
         } 
-            
-        println!("{}",data.lock().unwrap());
+        let finals = rx.recv().unwrap();
+
+        let newdata = data.lock().unwrap();// data
+
+        if !cort.output_string{
+            println!("{}",newdata);
+        }
             
             //println!("");
+        cort.renderd = format!("{}",newdata);
         
        
         loader::map{// returns the current map of screen to be put in prevmap.
