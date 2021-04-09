@@ -3,10 +3,19 @@
 //#[link(name="key", kind="static")]
 extern {
     fn getkeyd()->usize;
+    fn keydownd()->usize;
+
 }
+
 pub fn call() -> usize{
     unsafe {
         return getkeyd();
+    }
+}
+
+pub fn keydown() -> usize{
+    unsafe{
+        return keydownd()
     }
 }
 

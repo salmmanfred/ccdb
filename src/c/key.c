@@ -6,11 +6,12 @@
 #elif defined(__linux__)
     #define PLAT "linux" 
 #endif
+
 //this gets the keycodes
 int getkeyd() {
     //if (PLAT == "windows"){}
     if (_kbhit())
-        {
+    {
         int key_code = _getch();
             //printf("%d\n", key_code);
 
@@ -21,4 +22,13 @@ int getkeyd() {
         return 0;
     }
 
+}
+
+int keydownd(){
+
+    if (_kbhit()){
+        return 1;
+    }
+
+    return 0;
 }

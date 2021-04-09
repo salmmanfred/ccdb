@@ -6,7 +6,8 @@ use crate::colour;
 use crate::check::{threadCheck};
 use crate::physics;
 use crate::sprite;
-
+use std::sync::{Arc, Mutex};
+use std::sync::mpsc::channel;
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 //this is the core used for things like declaring the line lenght and amount of lines
@@ -167,10 +168,14 @@ impl screen{
 
         }
         
+        let data = Arc::new(Mutex::new("".to_string()));
+        let (tx, rx) = channel();
 
-        
         for P in 0..thr as i64{
+            let (data, tx) = (Arc::clone(&data), tx.clone());
+
             sso += 1;// creates all the variables 
+            let threadsize = thr;
             let mut chars = charss.clone();
             let mut xx = xxx.clone();
             let mut yy = yyy.clone();
@@ -211,19 +216,28 @@ impl screen{
                 thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
                
                 }
-                print!("{}",fchunk);
-                   
+
+                let mut data = data.lock().unwrap();
+                //print!("{}",fchunk);
+                data.push_str(&fchunk);
+                if P == threadsize as i64 - 1{
+                    tx.send(()).unwrap();
+                   // println!("\ndone{}{}",P,threadsize);
+                
+                }
             }));
             
         }
                 
             //}
                 //hands.push(thr);
+        let finals = rx.recv().unwrap();
+
         for thr in hands{
             thr.join().unwrap();  // join all threads
         } 
             
-
+        println!("{}",data.lock().unwrap());
             
             //println!("");
         
