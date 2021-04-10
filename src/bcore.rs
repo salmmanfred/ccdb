@@ -15,7 +15,6 @@ pub struct core{
     pub lines: i64,
     pub debug: bool,
     pub threads: i8,
-    pub delay: i64,
     pub output_string: bool,
 
 }

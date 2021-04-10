@@ -30,7 +30,6 @@ pub fn main() {
         lines: 4, // how many lines
         debug: true, // This will make it so that CCDB (VERSION) is not shown
         threads: 2, // How many threads 
-        delay: 1,// delay between threads ( So that they print in the correct order)
         output_string: false,// if you want the output to be in string form or if you want it to just print to the console
 
     };
@@ -113,7 +112,7 @@ v0.2.0: Add a function to find all of a certain character or just the first one 
 v0.3.0: Being able to get the output in a string instead of the cmd   DONE  
 v0.4.0: Physics and collision  DONE  
 v0.5.0: Loading of ascii sprites from file  DONE  
-v0.6.0: Key input rework  DONE (+ some rework to the acore)  
+v0.6.0: Key input rework  DONE (+ some rework to the acore(IT works allot better))  
 v0.7.0: Rework of variable names and function names  
 v0.8.0: No plans  
 v0.9.0: Getting the code ready for 1.0.0  

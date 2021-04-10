@@ -18,7 +18,6 @@ pub struct core{
     pub lines: i64,
     pub debug: bool,
     pub threads: i8,
-    pub delay: i64,
     pub output_string: bool,
 }
 // this is what core "compiles" into so that the core can use the data easier
@@ -30,7 +29,6 @@ pub struct cort{
     // prevmap is used so you dont render the same thing more than once saving some cpu usage
     prevmap: loader::map,
     thr: i8,
-    stb: i64,
     physobj: Vec<i64>,
     gravity: i64,
     debug: bool,
@@ -81,7 +79,6 @@ impl core{
                 chars: Vec::new(),
             },
             thr: self.threads,
-            stb: self.delay,
             physobj: Vec::new(),
             debug: self.debug,
             gravity: 1,
@@ -113,7 +110,7 @@ impl cort{
         physics::Arenderphys(screen, self.physobj.clone(),self.gravity);
         if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
             
-            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE,self.thr,self.stb,self);  // starts the screen rendering 
+            self.prevmap = screen.run(self);  // starts the screen rendering 
 
         }
         if self.output_string{
@@ -148,9 +145,13 @@ impl cort{
 impl screen{
 
     
-    pub fn run(&self, size: i64,size2: i64,thr:i8,stb:i64,cort:&mut  cort) -> loader::map{
+    pub fn run(&self,cort:&mut  cort) -> loader::map{
         // = Vec::with_capacity(10);
         //parses the data correctly so that it gets outputed correctly
+        let thr = cort.thr;
+        let size = cort.LINES;
+        let size2 = cort.BLOCKXLINE;
+        
         let mut aot = 0;
         let mut sso = 0;
         
@@ -174,19 +175,22 @@ impl screen{
         }
         
         let data = Arc::new(Mutex::new("".to_string()));
+        let current = Arc::new(Mutex::new(0 as i64));
+
         let (tx, rx) = channel();
 
         for P in 0..thr as i64{
             let (data, tx) = (Arc::clone(&data), tx.clone());
+            let (current, tx2) = (Arc::clone(&current), tx.clone());
 
-            sso += 1;// creates all the variables 
+
+            sso += 1;// creates all the variables since they are move they need to be re defined
             let threadsize = thr;
             let mut chars = charss.clone();
             let mut xx = xxx.clone();
             let mut yy = yyy.clone();
             let mut chunky1 = 0;
             let mut tsize = size;
-            let stb2 = stb;
             if size % 2 != 0{
                 tsize += 1;
             }
@@ -203,7 +207,7 @@ impl screen{
             hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
                 
                 let mut fchunk = "".to_string();
-                for y in chunky1..chunky2{
+                for y in chunky1..chunky2{// this is where the magic happens
                 let mut row = "".to_string();
                     for x in 0..size2{
                         let mut charo = " ".to_string();
@@ -217,21 +221,42 @@ impl screen{
                     }
                 fchunk.push_str(&format!("{}\n",row));
                 }
-                if P >= 1{
+                /*if P >= 1{
                     thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
                     
+                }*/
+
+                loop{// this checks if it is its turn to push the data
+                    let mut current = current.lock().unwrap();
+                    //println!("waiting...{},{}",P,*current);
+                    if *current == P{
+                        *current += 1;
+                        let mut data = data.lock().unwrap();
+                        //print!("{}",fchunk);
+                        data.push_str(&fchunk);
+                        drop(data);
+                        drop(current);
+                        break;
+                    }
+
                 }
+                /*println!("current{}",current);
 
-                let mut data = data.lock().unwrap();
-                //print!("{}",fchunk);
-                data.push_str(&fchunk);
-                drop(data);
+                *current += 1;
+                drop(current);*/
 
+
+                
+
+                //last thread sends the data back
                 if P == threadsize as i64 - 1{
                     tx.send(()).unwrap();
+                    tx2.send(()).unwrap();
+
                    // println!("\ndone{}{}",P,threadsize);
                 
                 }
+                
             }));
             
         }
@@ -246,7 +271,7 @@ impl screen{
 
         let newdata = data.lock().unwrap();// data
 
-        if !cort.output_string{
+        if !cort.output_string{// checks if it should print it out or not
             println!("{}",newdata);
         }
             
