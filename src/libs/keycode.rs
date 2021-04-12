@@ -26,6 +26,8 @@ pub const Y: usize = 121;
 pub const Z: usize = 60;
 
 pub const ESC: usize = 27;
+pub const SPACE: usize = 32;
+
 
 
 

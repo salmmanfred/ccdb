@@ -98,7 +98,7 @@ impl cort{
         
         
         thread::sleep(time::Duration::from_millis(screen.delay));
-        physics::Brenderphys(screen, self.physobj.clone(),self.gravity);
+        physics::Brenderphysics(screen, self.physobj.clone(),self.gravity);
         println!("{}",self.FCXO);
 
         if !self.equall(screen.gmap()){
@@ -112,26 +112,26 @@ impl cort{
         self.renderd.clone()
 
     }
-    fn prvrend(&mut self, f: String){
+    fn prvrend(&mut self, f: String){ // for putting the previous render in the self.renderd
         self.renderd = f;
     }
-    pub fn addphys(&mut self,pos: i64){ // adds a object to be renderd for phycis later 
+    pub fn addphysics(&mut self,pos: i64){ // adds a object to be renderd for phycis later 
         self.physobj.push(pos);
     }
-    pub fn addphysForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
+    pub fn addphysicsForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
         for x in screen.findAllOfX(chr){
             self.physobj.push(x);
         }
     }
-    pub fn removephys(&mut self,pos: i64){
+    pub fn removephysics(&mut self,pos: i64){ // removes physics
         self.physobj.retain(|&x| x != pos);
     }
-    pub fn removephysForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
+    pub fn removephysicsForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
         for x in screen.findAllOfX(chr){
-            self.removephys(x);
+            self.removephysics(x);
         }
     }
-    pub fn changePhysics(&mut self, grav: i64){
+    pub fn changePhysics(&mut self, grav: i64){ // change the physics to be what ever you want it to be 
         self.gravity = grav;
     }
 }

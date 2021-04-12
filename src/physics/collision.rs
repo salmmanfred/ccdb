@@ -6,7 +6,7 @@ struct colmap{
 }*/
 
 
-pub fn getcol(pos: usize,screen: &mut loader::map)->bool{ //just sees if an object has collided with another
+pub fn getcollision(pos: usize,screen: &loader::map)->bool{ //just sees if an object has collided with another
     
 
     for x in 0..screen.chars.len(){

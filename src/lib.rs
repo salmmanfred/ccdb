@@ -18,4 +18,4 @@ pub mod acore;
 #[path = "misc/check.rs"]pub mod check;
 // ! physics
 #[path = "physics/physics.rs"]pub mod physics;
-#[path = "physics/col.rs"]pub mod col;
+#[path = "physics/collision.rs"]pub mod collision;

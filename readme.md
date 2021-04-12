@@ -16,6 +16,8 @@ use ccdb::loader::{load,toMap};// this is the loader which makes it so you can l
 use ccdb::keyin; // For key input
 use ccdb::cursor; // for moving the cursor
 use ccdb::keycode; // for key codes (work in progress)
+use ccdb::sprite; // for sprites
+use ccdb::collision; // for collision
 
 pub fn main() {
     
@@ -51,9 +53,9 @@ pub fn main() {
     f.loadmap(toMap("#####\n33333".to_string()));//if you want to make a map out of a string 
 
     //! physics stuff
-    a.addphys(player); // adds phycis to an object 
-    a.addphysForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
-    a.removephys(player); // remove physics form an object 
+    a.addphysics(player); // adds phycis to an object 
+    a.addphysicsForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
+    a.removephysics(player); // remove physics form an object 
     a.changePhysics(-1); // change the gravity constant to make gravity stronger or weaker or upside down 
     let mut sprite = sprite::load("./maps/sprite.rsprite"); // loads the sprite from a text file 
     f.sprite.push(sprite);//push the sprite to the sprite vector 
@@ -95,7 +97,6 @@ pub fn main() {
 ## Differance between Bcore and Acore  
 Core is mutli threaded and does not work very efficiently with big amount of text  
 Bcore is the old algorithm for making the text  
-Bcore also outputs into a string instead of into the console  
 Their names are Acore: Banana core, Bcore: Olive core  
   
 # Multi threading  
@@ -113,7 +114,7 @@ v0.3.0: Being able to get the output in a string instead of the cmd   DONE
 v0.4.0: Physics and collision  DONE  
 v0.5.0: Loading of ascii sprites from file  DONE  
 v0.6.0: Key input rework  DONE (+ some rework to the acore(IT works allot better))  
-v0.7.0: Rework of variable names and function names  
+v0.7.0: Rework of variable names and function names  DO
 v0.8.0: No plans  
 v0.9.0: Getting the code ready for 1.0.0  
 v1.0.0: No plans  

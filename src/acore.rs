@@ -107,7 +107,7 @@ impl cort{
         thread::sleep(time::Duration::from_millis(screen.delay));
 
         println!("{}",self.FCXO);
-        physics::Arenderphys(screen, self.physobj.clone(),self.gravity);
+        physics::Arenderphysics(screen, self.physobj.clone(),self.gravity);
         if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
             
             self.prevmap = screen.run(self);  // starts the screen rendering 
@@ -121,23 +121,23 @@ impl cort{
         
 
     }
-    pub fn addphys(&mut self,pos: i64){// adds a object to be renderd for phycis later 
+    pub fn addphysics(&mut self,pos: i64){// adds a object to be renderd for phycis later 
         self.physobj.push(pos);
     }
-    pub fn addphysForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
+    pub fn addphysicsForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
         for x in screen.findAllOfX(chr){
             self.physobj.push(x);
         }
     }
-    pub fn removephys(&mut self,pos: i64){ // removes physics from object
+    pub fn removephysics(&mut self,pos: i64){ // removes physics from object
         self.physobj.retain(|&x| x != pos);
     }
-    pub fn removephysForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
+    pub fn removephysicsForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
         for x in screen.findAllOfX(chr){
-            self.removephys(x);
+            self.removephysics(x);
         }
     }
-    pub fn changePhysics(&mut self, grav: i64){
+    pub fn changePhysics(&mut self, grav: i64){ 
         self.gravity = grav;
     }
 
@@ -174,8 +174,9 @@ impl screen{
 
         }
         
-        let data = Arc::new(Mutex::new("".to_string()));
-        let current = Arc::new(Mutex::new(0 as i64));
+        
+        let data = Arc::new(Mutex::new("".to_string()));//the Big string that everythings puts into 
+        let current = Arc::new(Mutex::new(0 as i64));// to make sure the threads push only when its their turn 
 
         let (tx, rx) = channel();
 
@@ -186,20 +187,21 @@ impl screen{
 
             sso += 1;// creates all the variables since they are move they need to be re defined
             let threadsize = thr;
+          
             let mut chars = charss.clone();
             let mut xx = xxx.clone();
             let mut yy = yyy.clone();
-            let mut chunky1 = 0;
+            let mut chunk1 = 0;
             let mut tsize = size;
             if size % 2 != 0{
                 tsize += 1;
             }
             if P > 0{                           // calculates the chunk 
                 
-                chunky1 = prev+tsize/thr as i64;
-                prev = chunky1;
+                chunk1 = prev+tsize/thr as i64;
+                prev = chunk1;
             }
-            let chunky2 = chunky1+tsize/thr as i64;
+            let chunk2 = chunk1+tsize/thr as i64;
 
 
           
@@ -207,13 +209,15 @@ impl screen{
             hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
                 
                 let mut fchunk = "".to_string();
-                for y in chunky1..chunky2{// this is where the magic happens
+                for y in chunk1..chunk2{// this is where the magic happens
                 let mut row = "".to_string();
                     for x in 0..size2{
                         let mut charo = " ".to_string();
                         for o in 0..chars.len(){
                             if x == xx[o] && y == yy[o]{
+                                
                                 charo = chars[o].to_string();
+                                
                             }
                         }
                         row.push_str(&format!("{}",charo));  // push it together to a single line
@@ -229,11 +233,11 @@ impl screen{
                 loop{// this checks if it is its turn to push the data
                     let mut current = current.lock().unwrap();
                     //println!("waiting...{},{}",P,*current);
-                    if *current == P{
-                        *current += 1;
-                        let mut data = data.lock().unwrap();
+                    if *current == P{//makes sure it is its turn 
+                        *current += 1;// adds one more
+                        let mut data = data.lock().unwrap();// get data
                         //print!("{}",fchunk);
-                        data.push_str(&fchunk);
+                        data.push_str(&fchunk);//push the data
                         drop(data);
                         drop(current);
                         break;
