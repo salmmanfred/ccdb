@@ -1,3 +1,5 @@
+use crate::loader;
+
 pub struct sprite{
     pub chars: Vec<String>,
     pub x: Vec<i64>,
@@ -20,6 +22,7 @@ impl sprite{
 
        }
     }
+    
     
 
 }

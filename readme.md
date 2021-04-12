@@ -23,7 +23,9 @@ pub fn main() {
     
     cursor::clear(); // clears the screen
     cursor::hideCursor(); // hides the cursor
-    
+    let assets = loader::loadFromFolder("./maps/".to_string(),".rmap".to_string(),".rsprite".to_string());//you can load assets using loadFromFolder you will be rewarded with a folder struct 
+    let map1 = assets.loadAssetMap("map");// you can get your map using assets.loadAssetMap for getting the map
+    let psprite = assets.loadAssetSprite("sprite");// sprite can be found using this 
 
     let x = Acore{
         name: "Test project".to_string(), // name of the project 
@@ -114,8 +116,7 @@ v0.3.0: Being able to get the output in a string instead of the cmd   DONE
 v0.4.0: Physics and collision  DONE  
 v0.5.0: Loading of ascii sprites from file  DONE  
 v0.6.0: Key input rework  DONE (+ some rework to the acore(IT works allot better))  
-v0.7.0: Rework of variable names and function names  DO
-v0.8.0: No plans  
+v0.7.0: Rework of variable names and function names  DONE
+v0.8.0: Adding a way to load in a folder  DONE
 v0.9.0: Getting the code ready for 1.0.0  
 v1.0.0: No plans  
-
