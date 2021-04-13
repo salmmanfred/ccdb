@@ -1,6 +1,6 @@
 [package]
 name = "ccdb"
-version = "0.7.0"
+version = "0.8.0"
 authors = ["TheSlam <32799244+salmmanfred@users.noreply.github.com>"]
 edition = "2018"
 links = "./src/c/"
