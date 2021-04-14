@@ -1,4 +1,5 @@
 //! Banana core 
+// ok sure this is slower but damn its much more fun to work on this 
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
@@ -24,8 +25,8 @@ pub struct core{
 pub struct cort{
     FCXO: String,
     v: i64,
-    BLOCKXLINE: i64,
-    LINES: i64,
+    pub BLOCKXLINE: i64,
+    pub LINES: i64,
     // prevmap is used so you dont render the same thing more than once saving some cpu usage
     prevmap: loader::map,
     thr: i8,
@@ -140,6 +141,12 @@ impl cort{
     pub fn changePhysics(&mut self, grav: i64){ 
         self.gravity = grav;
     }
+    /*pub fn changeLINES(&mut self,newlines: i64){
+        self.LINES = newlines;
+    }
+    pub fn changeXperLine(&mut self,x: i64){
+        self.BLOCKXLINE = x;
+    }*/
 
 }
 impl screen{

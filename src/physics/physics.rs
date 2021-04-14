@@ -26,10 +26,12 @@ fn renderphys(screen: map,physobj: Vec<i64>,Gdrag: i64)->map{
     };
     
     for i in physobj{
-        mp.y[i as usize] += Gdrag;
-        if collision::getcollision(i as usize, &mut mp){
-            mp.y[i as usize] -= Gdrag;
+        for x in 0..Gdrag{
+            mp.y[i as usize] += 1;
+            if collision::getcollision(i as usize, &mut mp){
+                mp.y[i as usize] -= 1;
 
+            }
         }
     }   
     mp

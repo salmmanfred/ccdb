@@ -7,87 +7,122 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
   
   
 ## Learn how to use it by example  
-
-```rust
-
+  
+  
+```rust  
 extern crate ccdb;
-use ccdb::acore::{core,screen}; // there are 2 diffrent Acores there is Acore and there is banana both work the same way when talking to them 
+use ccdb::acore::{core,screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them 
 use ccdb::loader::{load,toMap};// this is the loader which makes it so you can load a map from file or load a map from string 
+use ccdb::loader;
 use ccdb::keyin; // For key input
+use ccdb::keycode; // For key input
 use ccdb::cursor; // for moving the cursor
-use ccdb::keycode; // for key codes (work in progress)
 use ccdb::sprite; // for sprites
 use ccdb::collision; // for collision
+
+
+
 
 pub fn main() {
     
     cursor::clear(); // clears the screen
     cursor::hideCursor(); // hides the cursor
-    let assets = loader::loadFromFolder("./maps/".to_string(),".rmap".to_string(),".rsprite".to_string());//you can load assets using loadFromFolder you will be rewarded with a folder struct 
-    let map1 = assets.loadAssetMap("map");// you can get your map using assets.loadAssetMap for getting the map
-    let psprite = assets.loadAssetSprite("sprite");// sprite can be found using this 
+    let assets = loader::loadFromFolder("./maps/".to_string(),".rmap".to_string(),".rsprite".to_string()); // get a folder of maps and sprites 
+    let map1 = assets.loadAssetMap("map");//load an assets from the folder struct 
+    let psprite = assets.loadAssetSprite("sprite");//
 
-    let x = Acore{
-        name: "Test project".to_string(), // name of the project 
-        desc: " - A test project".to_string(), // descirption (short )
-        linelenght: 20,// how many charecters per line
-        lines: 4, // how many lines
-        debug: true, // This will make it so that CCDB (VERSION) is not shown
-        threads: 2, // How many threads 
-        output_string: false,// if you want the output to be in string form or if you want it to just print to the console
 
+    let x = core{// set up the core
+        name: "Test project".to_string(),//name 
+        desc: " - A test project".to_string(),// descirption
+        linelenght: 40,// ammount of chars per line
+        lines: 8,//amount of lines
+        debug: true,//debug 
+        threads: 4,// ammount of threads
+        output_string: false,// if you want the output in string form or it just to printed out to the console directly 
     };
     
     
-    let mut f = screen{
-        chars: vec!("0".to_string(),"1".to_string()), // these are the different ascii "items" that get renderd X and Y are the cordinates 
+    let mut f = screen{// screen is where everything will be stored and how it should be renderd 
+        chars: vec!("0".to_string(),"1".to_string()),
         x: vec!(1,2),
         y: vec!(1,2),
-        delay: 10,// delay between each frame for
-        sprite: Vec::new(),// the sprite vector contains all the sprites that are going to be renderd 
-
+        delay: 10,// delay between each frame
+        sprite: Vec::new(),// this is where all sprites go
     };
     
-    let mut a = x.setup(); // set up the Acore struct 
-    //! map loading stuff
-    f.loadmap(load("./maps/map.rmap")); // loads in the map
-    let player = f.findX("@".to_string()); // gets the player position in the screen.chars section findAllOfX works the same but returns a vector 
+    let mut a = x.setup();// setup the core
+    f.loadmap(map1);//load a map from a map struct 
     f.loadmap(toMap("#####\n33333".to_string()));//if you want to make a map out of a string 
-
-    //! physics stuff
-    a.addphysics(player); // adds phycis to an object 
-    a.addphysicsForAllX(&f,"I".to_string());// adds physics to all objects with the correct char
-    a.removephysics(player); // remove physics form an object 
-    a.changePhysics(-1); // change the gravity constant to make gravity stronger or weaker or upside down 
-    let mut sprite = sprite::load("./maps/sprite.rsprite"); // loads the sprite from a text file 
-    f.sprite.push(sprite);//push the sprite to the sprite vector 
-    f.sprite[0].setxy(2,-2);//sets the position of the sprite 
+    f.loadmap(load("./maps/map.rmap"));
+    let run = true;
+    let player = f.findX("@".to_string());// find a chars position
+    
+    a.addphysics(player);// add physics to char position
+    a.addphysicsForAllX(&f,"I".to_string());
+    a.removephysics(player);//remove physics for char pos
+    a.changePhysics(1);// change the phycis 
+    let mut sprite = psprite;// sprite loaded from assets otherwise its sprite::load("./maps/sprite.rsprite");
+    f.sprite.push(sprite);//add the sprite to the sprite rendering list 
+    f.sprite[0].setxy(2,-2);// set the sprites position
+    f.sprite[0].movexy(5, 0);// move the sprite
+    
+    let mut dir = 0;
     loop {
         
-        cursor::clear();// clear the screen
-        a.render(&mut f);// renders it all does not work with Bcore
-        println!("{}",a.render(&mut f););// if you are using Bcore the output gets output in a string ( Does not work with Acore )
-        f.sprite[0].movexy(1, 0); // moves the sprite to the side 
-
-        if keyin::keydown(){ // checks if there is a keydown
+        cursor::clear();
+        cursor::hideCursor();
+        //a.render(&mut f);
+        println!("{}",a.render(&mut f));//render the entire screen
+        f.sprite[0].movexy(1, 0);
+        
+        //standard key input system
+        if keyin::keydown(){
 
         
-            match keyin::getkey(){// gets said keycode
-                97 =>{
+            match keyin::getkey(){
+                keycode::A =>{
                     f.x[player as usize] -= 1;
+                    if collision::getcollision(player as usize, &f.gmap())//how to get the collision must pass in the screen
+                    {
+                        f.x[player as usize] += 1;
+                    }
                 }
-                100 =>{
+                keycode::D =>{
                     f.x[player as usize] += 1;
+                    if collision::getcollision(player as usize, &f.gmap())
+                    {
+                        f.x[player as usize] -= 1;
+                    }
                 }
-                119 =>{
+                keycode::W =>{
                     f.y[player as usize] -= 1;
+                    if collision::getcollision(player as usize, &f.gmap())
+                    {
+                        f.y[player as usize] += 1;
+                    }
                 }
-                115 =>{
+                keycode::S =>{
                     f.y[player as usize] += 1;
+                    if collision::getcollision(player as usize, &f.gmap())
+                    {
+                        f.y[player as usize] -= 1;
+                    }
+                }
+                keycode::SPACE =>{
+                    for x in 0..10{
+                        f.x[player as usize] += 1;
+                        if collision::getcollision(player as usize, &f.gmap())
+                        {
+                            f.x[player as usize] -= 1;
+                            break
+                        }
+                    }   
                 }
                 _ =>{
 
-            }
+                }
+        }   
         }
       
 
@@ -95,11 +130,15 @@ pub fn main() {
 
   
 }
+
+
 ```  
+  
 ## Differance between Bcore and Acore  
 Core is mutli threaded and does not work very efficiently with big amount of text  
 Bcore is the old algorithm for making the text  
 Their names are Acore: Banana core, Bcore: Olive core  
+Bcore is faster than Acore but Bcore is just weird  
   
 # Multi threading  
 If you want to use multi threading you have to use Acore  
@@ -118,5 +157,5 @@ v0.5.0: Loading of ascii sprites from file  DONE
 v0.6.0: Key input rework  DONE (+ some rework to the acore(IT works allot better))  
 v0.7.0: Rework of variable names and function names  DONE  
 v0.8.0: Adding a way to load in a folder  DONE  
-v0.9.0: Getting the code ready for 1.0.0   
-v1.0.0: No plans  
+v0.9.0: Getting the code ready for 1.0.0  
+v1.0.0: No plans 

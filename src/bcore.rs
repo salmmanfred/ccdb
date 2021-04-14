@@ -1,4 +1,6 @@
 //! Olive core
+// Honestly would remove it if it wasent so damn good at its job some how 
+
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
@@ -21,8 +23,8 @@ pub struct core{
 pub struct cort{
     FCXO: String,
     v: i64,
-    BLOCKXLINE: i64,
-    LINES: i64,
+    pub BLOCKXLINE: i64,
+    pub LINES: i64,
     prevmap: loader::map,
     renderd: String,
     physobj: Vec<i64>,
@@ -106,10 +108,13 @@ impl cort{
         
             self.prevmap = screen.run(self.LINES,self.BLOCKXLINE, self);
         }
-        if !self.output_string{
+        if self.output_string == false{
             println!("{}",self.renderd);
+        }else{
+            return self.renderd.clone()
+
         }
-        self.renderd.clone()
+        "".to_string()
 
     }
     fn prvrend(&mut self, f: String){ // for putting the previous render in the self.renderd
