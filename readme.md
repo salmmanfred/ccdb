@@ -157,5 +157,5 @@ v0.5.0: Loading of ascii sprites from file  DONE
 v0.6.0: Key input rework  DONE (+ some rework to the acore(IT works allot better))  
 v0.7.0: Rework of variable names and function names  DONE  
 v0.8.0: Adding a way to load in a folder  DONE  
-v0.9.0: Getting the code ready for 1.0.0  
-v1.0.0: No plans 
+v0.9.0: Getting the code ready for 1.0.0  DONE  
+v1.0.0: optimization    

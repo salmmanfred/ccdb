@@ -78,3 +78,7 @@ void show(){
     }
 
 }
+/*
+Vector<i64> getwinsize(){
+
+}*/

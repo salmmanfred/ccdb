@@ -9,6 +9,8 @@ use crate::physics;
 use crate::sprite;
 use std::sync::{Arc, Mutex};
 use std::sync::mpsc::channel;
+use std::time::{Instant};
+
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 //this is the core used for things like declaring the line lenght and amount of lines
@@ -35,6 +37,7 @@ pub struct cort{
     debug: bool,
     renderd: String,
     output_string: bool,
+    pub extime: i64,
 }
 /*
 PREVX: Vec<i64>,
@@ -85,6 +88,7 @@ impl core{
             gravity: 1,
             renderd: "".to_string(),
             output_string: self.output_string,
+            extime: 0,
         }
     }
     
@@ -153,6 +157,8 @@ impl screen{
 
     
     pub fn run(&self,cort:&mut  cort) -> loader::map{
+        let now = Instant::now();
+
         // = Vec::with_capacity(10);
         //parses the data correctly so that it gets outputed correctly
         let thr = cort.thr;
@@ -183,14 +189,20 @@ impl screen{
         
         
         let data = Arc::new(Mutex::new("".to_string()));//the Big string that everythings puts into 
+        let data2 = Arc::new(Mutex::new("".to_string()));//the Big string that everythings puts into // for upper threads
+
         let current = Arc::new(Mutex::new(0 as i64));// to make sure the threads push only when its their turn 
+        let current2 = Arc::new(Mutex::new((thr/2+1) as i64));// to make sure the threads push only when its their turn for upper threads
+       
 
         let (tx, rx) = channel();
 
         for P in 0..thr as i64{
             let (data, tx) = (Arc::clone(&data), tx.clone());
             let (current, tx2) = (Arc::clone(&current), tx.clone());
-
+            let (data2) = (Arc::clone(&data2));
+            let (current2) = (Arc::clone(&current2));
+            
 
             sso += 1;// creates all the variables since they are move they need to be re defined
             let threadsize = thr;
@@ -214,43 +226,115 @@ impl screen{
           
                 
             hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
-                
+                let now = Instant::now();
+            
                 let mut fchunk = "".to_string();
+                let mut smallest = 0;
+                let mut biggest = 0;
+                let mut open = true;
+                for i in 0..chars.len(){
+                    if yy[i] >= chunk1 && open{
+                        smallest = i;
+                        open = false;
+                    }
+                    if yy[i] <= chunk2{
+                        biggest = i+1;
+                    }
+                    
+                }
+
+               
+                //println!(" po{},{}",biggest,chars.len());
+
+                //println!("f{},{}",smallest,biggest);
+                
+
+
                 for y in chunk1..chunk2{// this is where the magic happens
                 let mut row = "".to_string();
+                let mut vectorY: Vec<i64> = Vec::new();
+
+                for i in smallest..biggest{
+                    if yy[i] == y{
+                        vectorY.push(i as i64);
+                        
+                    }
+                }
+                    let mut donesofar = 0;
                     for x in 0..size2{
-                        let mut charo = " ".to_string();
-                        for o in 0..chars.len(){
-                            if x == xx[o] && y == yy[o]{
-                                
-                                charo = chars[o].to_string();
-                                
+                       
+                        let mut ch = " ";
+                        if donesofar < vectorY.len(){
+                            //println!("so{},{}",donesofar,vectorY.len());
+                            for o in vectorY.iter(){
+                                let o = o.to_owned() as usize;
+                                if x == xx[o]{
+                                    donesofar += 1;
+                                    ch = &chars[o];
+                                    break;
+
+                                } 
                             }
                         }
-                        row.push_str(&format!("{}",charo));  // push it together to a single line
+
+
+                        row.push_str(ch);  // push it together to a single line
                     
                     }
-                fchunk.push_str(&format!("{}\n",row));
+
+
+                    fchunk.push_str(&format!("{}\n",row));
                 }
+
+
+
                 /*if P >= 1{
                     thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
                     
                 }*/
+                let mut trs = 0;
 
                 loop{// this checks if it is its turn to push the data
-                    let mut current = current.lock().unwrap();
-                    //println!("waiting...{},{}",P,*current);
-                    if *current == P{//makes sure it is its turn 
-                        *current += 1;// adds one more
-                        let mut data = data.lock().unwrap();// get data
-                        //print!("{}",fchunk);
-                        data.push_str(&fchunk);//push the data
-                        drop(data);
-                        drop(current);
-                        break;
+                    if P <= threadsize as i64/2{
+                        let mut current = current.lock().unwrap();
+                        //println!("waiting...{},{}",P,*current);
+                        if *current == P{//makes sure it is its turn 
+                            *current += 1;// adds one more
+                            let mut data = data.lock().unwrap();// get data
+
+                            //print!("{}",fchunk);
+                            data.push_str(&fchunk);//push the data
+                            drop(current);
+
+                            drop(data);
+                            break;
+                        }else{
+                            drop(current);
+                        }
+                    }else{
+                        let mut current = current2.lock().unwrap();
+                        //println!("waiting...{},{}",P,*current);
+                        if *current == P{//makes sure it is its turn 
+                            *current = P+1;// adds one more
+                            let mut data = data2.lock().unwrap();// get data
+
+                            //print!("{}",fchunk);
+                            data.push_str(&fchunk);//push the data
+                            drop(current);
+
+                            drop(data);
+                            break;
+                        }else{
+                            drop(current);
+                        }
                     }
+                    if trs >= 100{
+                        //break;
+                    }
+                    trs+= 1;
 
                 }
+
                 /*println!("current{}",current);
 
                 *current += 1;
@@ -267,6 +351,9 @@ impl screen{
                    // println!("\ndone{}{}",P,threadsize);
                 
                 }
+                println!("{}    ",now.elapsed().as_millis()); 
+
+
                 
             }));
             
@@ -277,17 +364,20 @@ impl screen{
 
         for thr in hands{
             thr.join().unwrap();  // join all threads
-        } 
+        }
         let finals = rx.recv().unwrap();
 
         let newdata = data.lock().unwrap();// data
+        let newdata2 = data2.lock().unwrap();// data
+        let fdata = format!("{}{}",newdata,newdata2);
 
         if !cort.output_string{// checks if it should print it out or not
-            println!("{}",newdata);
+            println!("{}",fdata);
         }
             
             //println!("");
-        cort.renderd = format!("{}",newdata);
+        cort.renderd = fdata;
+        cort.extime = now.elapsed().as_millis() as i64; 
         
        
         loader::map{// returns the current map of screen to be put in prevmap.

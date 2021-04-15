@@ -166,10 +166,10 @@ impl screen{
                 }
 
             }
-            for x in 0..self.sprite.len(){
+           /* for x in 0..self.sprite.len(){
                 if self.sprite[x].y[x] == sx{
                 }
-            }
+            }*/
             // makes the line and prints it 
             line.push_str(&format!("{}\n",&self.makeline(betterx,bettern,size2)));
 
