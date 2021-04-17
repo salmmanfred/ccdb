@@ -67,7 +67,7 @@ impl core{
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB ACORE ALPHA");
+            xxs.push_str(" CCDB ACORE");
 
         }
         //println!("{}",xxs);
@@ -97,16 +97,21 @@ impl core{
 impl cort{
     fn equall(&self, map: loader::map)-> bool{
 
-        if self.prevmap.x == map.x && self.prevmap.y == map.y && self.prevmap.chars == map.chars {
+        if self.prevmap.x == map.x  && self.prevmap.y == map.y && self.prevmap.chars == map.chars{
+
             return true  // checks if the screen and a map is the same 
+
+            
         }
+        
+
 
 
         return false
     }
     pub fn render(&mut self, screen: &mut screen)-> String{
 
-       // println!("■".green())
+       // ■
         
         
         thread::sleep(time::Duration::from_millis(screen.delay));
@@ -114,10 +119,15 @@ impl cort{
         println!("{}",self.FCXO);
         physics::Arenderphysics(screen, self.physobj.clone(),self.gravity);
         if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
+           
             
             self.prevmap = screen.run(self);  // starts the screen rendering 
-
+        }else{
+            if !self.output_string{
+                println!("{}",self.renderd)
+            }
         }
+
         if self.output_string{
             return self.renderd.clone()
         }else{
@@ -188,20 +198,22 @@ impl screen{
         }
         
         
-        let data = Arc::new(Mutex::new("".to_string()));//the Big string that everythings puts into 
-        let data2 = Arc::new(Mutex::new("".to_string()));//the Big string that everythings puts into // for upper threads
-
-        let current = Arc::new(Mutex::new(0 as i64));// to make sure the threads push only when its their turn 
-        let current2 = Arc::new(Mutex::new((thr/2+1) as i64));// to make sure the threads push only when its their turn for upper threads
+        
+        let mut megadata: Vec<Arc<Mutex<String>>> = Vec::new();// collect all the mutexes in the same vector
+        for x in 0..thr{
+            megadata.push(Arc::new(Mutex::new("".to_string())));
+        }
        
 
         let (tx, rx) = channel();
 
         for P in 0..thr as i64{
+            let (data, tx) = (Arc::clone(&megadata[P as usize]), tx.clone());//get the correct mutex 
+            /*
             let (data, tx) = (Arc::clone(&data), tx.clone());
             let (current, tx2) = (Arc::clone(&current), tx.clone());
             let (data2) = (Arc::clone(&data2));
-            let (current2) = (Arc::clone(&current2));
+            let (current2) = (Arc::clone(&current2));*/
             
 
             sso += 1;// creates all the variables since they are move they need to be re defined
@@ -226,13 +238,13 @@ impl screen{
           
                 
             hands.push(thread::spawn( move|| { // creates a thread to start working on a chunk
-                let now = Instant::now();
+                //let now = Instant::now();
             
                 let mut fchunk = "".to_string();
                 let mut smallest = 0;
                 let mut biggest = 0;
                 let mut open = true;
-                for i in 0..chars.len(){
+                for i in 0..chars.len(){// get the smallest index for finding all the chars that the threads need and the biggest
                     if yy[i] >= chunk1 && open{
                         smallest = i;
                         open = false;
@@ -251,22 +263,26 @@ impl screen{
 
 
                 for y in chunk1..chunk2{// this is where the magic happens
-                let mut row = "".to_string();
-                let mut vectorY: Vec<i64> = Vec::new();
+                    let mut row = "".to_string();
+                    let mut vectorY: Vec<String> = Vec::new();
+                    let mut vectorX: Vec<i64> = Vec::new();
 
-                for i in smallest..biggest{
-                    if yy[i] == y{
-                        vectorY.push(i as i64);
-                        
+
+                    for i in smallest..biggest{// get the correct data for the Y 
+                        if yy[i] == y{
+                            vectorY.push(chars[i].clone());
+                            vectorX.push(xx[i]);
+
+                            
+                        }
                     }
-                }
                     let mut donesofar = 0;
                     for x in 0..size2{
                        
                         let mut ch = " ";
-                        if donesofar < vectorY.len(){
-                            //println!("so{},{}",donesofar,vectorY.len());
-                            for o in vectorY.iter(){
+                        if donesofar <= vectorY.len(){
+                            //println!("so{},{}",chars.len(),vectorY.len());
+                           /* for o in vectorY.iter(){
                                 let o = o.to_owned() as usize;
                                 if x == xx[o]{
                                     donesofar += 1;
@@ -274,11 +290,23 @@ impl screen{
                                     break;
 
                                 } 
+                            }*/
+                            for i in 0..vectorX.len(){// finds the correct char? 
+                
+                                if vectorX[i] == x{
+                                    donesofar +=1;
+                                    ch = &vectorY[i];
+                                    
+                                    break;
+                                }
+            
                             }
+                        }else{
+                            //break;
                         }
 
 
-                        row.push_str(ch);  // push it together to a single line
+                        row.push_str(&ch);  // push it together to a single line
                     
                     }
 
@@ -286,73 +314,23 @@ impl screen{
                     fchunk.push_str(&format!("{}\n",row));
                 }
 
+                // push back the data
+                let mut data = data.lock().unwrap();// get data
+                data.push_str(&fchunk);//push the data
+                drop(data);
+                
+               
 
-
-                /*if P >= 1{
-                    thread::sleep(time::Duration::from_nanos(stb2 as u64)); // delay so that the chunks will be printed in the correct oder 
-                    
-                }*/
-                let mut trs = 0;
-
-                loop{// this checks if it is its turn to push the data
-                    if P <= threadsize as i64/2{
-                        let mut current = current.lock().unwrap();
-                        //println!("waiting...{},{}",P,*current);
-                        if *current == P{//makes sure it is its turn 
-                            *current += 1;// adds one more
-                            let mut data = data.lock().unwrap();// get data
-
-                            //print!("{}",fchunk);
-                            data.push_str(&fchunk);//push the data
-                            drop(current);
-
-                            drop(data);
-                            break;
-                        }else{
-                            drop(current);
-                        }
-                    }else{
-                        let mut current = current2.lock().unwrap();
-                        //println!("waiting...{},{}",P,*current);
-                        if *current == P{//makes sure it is its turn 
-                            *current = P+1;// adds one more
-                            let mut data = data2.lock().unwrap();// get data
-
-                            //print!("{}",fchunk);
-                            data.push_str(&fchunk);//push the data
-                            drop(current);
-
-                            drop(data);
-                            break;
-                        }else{
-                            drop(current);
-                        }
-                    }
-                    if trs >= 100{
-                        //break;
-                    }
-                    trs+= 1;
-
-                }
-
-                /*println!("current{}",current);
-
-                *current += 1;
-                drop(current);*/
+                
 
 
                 
 
-                //last thread sends the data back
-                if P == threadsize as i64 - 1{
-                    tx.send(()).unwrap();
-                    tx2.send(()).unwrap();
+                //send data back
+                tx.send(()).unwrap();
+                   
 
-                   // println!("\ndone{}{}",P,threadsize);
-                
-                }
-                println!("{}    ",now.elapsed().as_millis()); 
-
+                //println!("{}    ",now.elapsed().as_millis()); 
 
                 
             }));
@@ -367,9 +345,12 @@ impl screen{
         }
         let finals = rx.recv().unwrap();
 
-        let newdata = data.lock().unwrap();// data
-        let newdata2 = data2.lock().unwrap();// data
-        let fdata = format!("{}{}",newdata,newdata2);
+        
+
+        let mut fdata = "".to_string();
+        for x in megadata{
+            fdata.push_str(&x.lock().unwrap());
+        }
 
         if !cort.output_string{// checks if it should print it out or not
             println!("{}",fdata);
@@ -379,12 +360,9 @@ impl screen{
         cort.renderd = fdata;
         cort.extime = now.elapsed().as_millis() as i64; 
         
-       
-        loader::map{// returns the current map of screen to be put in prevmap.
-            x: self.y.clone(),
-            y: self.y.clone(),
-            chars: self.chars.clone(),
-        }
+        
+        self.gmap()// returns the current map of screen to be put in prevmap.
+        
     }
 
 

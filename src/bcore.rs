@@ -60,7 +60,7 @@ impl core{
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB BCORE ALPHA");
+            xxs.push_str(" CCDB BCORE");
         }
         //println!("{}",xxs);
         cort{
