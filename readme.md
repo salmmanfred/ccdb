@@ -66,7 +66,7 @@ pub fn main() {
     f.sprite.push(sprite);//add the sprite to the sprite rendering list 
     f.sprite[0].setxy(2,-2);// set the sprites position
     f.sprite[0].movexy(5, 0);// move the sprite
-    
+    let x = terminal::getTerminalSize();// get the terminal size
     let mut dir = 0;
     loop {
         
