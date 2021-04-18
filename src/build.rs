@@ -10,4 +10,8 @@ fn main() {
     cc::Build::new()
     .file("./src/c/cursorhand.c")
     .compile("cursor");
+
+    cc::Build::new()
+    .file("./src/c/term.c")
+    .compile("term");
 }

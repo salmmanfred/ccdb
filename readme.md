@@ -159,3 +159,7 @@ v0.7.0: Rework of variable names and function names  DONE
 v0.8.0: Adding a way to load in a folder  DONE  
 v0.9.0: Getting the code ready for 1.0.0  DONE  
 v1.0.0: optimization  DONE  
+v1.1.0: Terminal control  
+v1.2.0: Animation for sprites  
+v1.3.0: No plans  
+v1.4.0: No plans  

@@ -8,6 +8,8 @@ pub mod acore;
 #[path = "libs/keyin.rs"]pub mod keyin;
 #[path = "libs/keycode.rs"]pub mod keycode;
 #[path = "libs/cursor.rs"]pub mod cursor;
+#[path = "libs/terminal.rs"]pub mod terminal;
+
 
 // ! map
 #[path = "map/loader.rs"]pub mod loader;

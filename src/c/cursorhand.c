@@ -78,11 +78,4 @@ void show(){
     }
 
 }
-/*
-Vector<i64> getwinsize(){
-    struct winsize w;
-    ioctl(STDOUT_FILENO, TIOCGWINSZ, &w);
 
-    printf ("lines %d\n", w.ws_row);
-    printf ("columns %d\n", w.ws_col);
-}*/
