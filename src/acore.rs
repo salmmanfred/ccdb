@@ -53,6 +53,7 @@ pub struct screen{
     pub sprite: Vec<sprite::sprite>,
     
 }
+
 // used for the set up of cort 
 impl core{
     pub fn setup(&self)->cort{
@@ -93,6 +94,8 @@ impl core{
     }
     
 }
+
+
 
 impl cort{
     fn equall(&self, map: loader::map)-> bool{
@@ -374,11 +377,23 @@ impl screen{
 
     }
     pub fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
-        loader::map{
-            x: self.x.clone(),
-            y: self.y.clone(),
-            chars: self.chars.clone()
-        }
+        
+            let mut charss = self.chars.clone();
+            let mut xxx = self.x.clone();
+            let mut yyy = self.y.clone();
+    
+            for x in 0..self.sprite.len(){//appends the sprite 
+                charss.extend(self.sprite[x].chars.clone());
+                xxx.extend(self.sprite[x].x.clone());
+                yyy.extend(self.sprite[x].y.clone());
+
+            }
+             loader::map{
+                x: xxx,
+                y: yyy,
+                chars: charss
+            }
+        
     }
     pub fn findX(&self, ch: String) -> i64{ // for finding a character 
         for x in 0..self.chars.len(){

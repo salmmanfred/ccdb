@@ -62,11 +62,16 @@ pub fn main() {
     a.addphysicsForAllX(&f,"I".to_string());
     a.removephysics(player);//remove physics for char pos
     a.changePhysics(1);// change the phycis 
+    
     let mut sprite = psprite;// sprite loaded from assets otherwise its sprite::load("./maps/sprite.rsprite");
     f.sprite.push(sprite);//add the sprite to the sprite rendering list 
     f.sprite[0].setxy(2,-2);// set the sprites position
     f.sprite[0].movexy(5, 0);// move the sprite
+
     let x = terminal::getTerminalSize();// get the terminal size
+    terminal::setTerminalSize(50,20);// change terminal size
+
+
     let mut dir = 0;
     loop {
         
@@ -159,7 +164,7 @@ v0.7.0: Rework of variable names and function names  DONE
 v0.8.0: Adding a way to load in a folder  DONE  
 v0.9.0: Getting the code ready for 1.0.0  DONE  
 v1.0.0: optimization  DONE  
-v1.1.0: Terminal control  
+v1.1.0: Terminal control  DONE  
 v1.2.0: Animation for sprites  
 v1.3.0: No plans  
 v1.4.0: No plans  

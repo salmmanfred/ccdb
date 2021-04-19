@@ -1,7 +1,7 @@
 use openfile;
 use std::{fs, io};
 use crate::sprite;
-
+use std::result;
 #[derive(Clone)] 
 pub struct map{
     pub chars: Vec<String>,
@@ -64,47 +64,45 @@ pub fn toMap(str: String)-> map{ //makes a string into a map
     loadvec(vecStr)
 }
 
+
 pub struct folder{
     maps: Vec<map>,
     names: Vec<String>,
     meta: Vec<i8>,
 }
 impl folder{
-    pub fn loadAssetMap(&self, name:&str)->map{// find and push the map
+    pub fn loadAssetMap(&self, name:&str)->Result<map,String>{// find and push the map
+         
         for x in 0..self.names.len(){
             if self.names[x] == name{
                 if self.meta[x] == 0{
-                   
-                return self.maps[x].clone();
+                    if self.maps[x].x.len()<= 0{
+                        return Err("Could not be found".to_string())
+                    }
+                return Ok(self.maps[x].clone())
                 }
             }
         }
-        map{
-            chars:Vec::new(),
-            x:Vec::new(),
-            y:Vec::new(),
+        Err("Loading error".to_string())
 
-
-        }
     }
-    pub fn loadAssetSprite(&self,name:&str)->sprite::sprite{// find and push the sprite
+    pub fn loadAssetSprite(&self,name:&str)->Result<sprite::sprite,String>{// find and push the sprite
         for x in 0..self.names.len(){
             if self.names[x] == name{
                 if self.meta[x] == 1{
-                   
-                return self.maps[x].makeSprite();
+                    if self.maps[x].x.len()<= 0{
+                        return Err("Could not be found".to_string())
+                    }
+                return Ok(self.maps[x].makeSprite())
                 }
             }
         }
-        sprite::sprite{
-            chars:Vec::new(),
-            x:Vec::new(),
-            y:Vec::new(),
-
-
-        }
+        Err("Loading error".to_string())
     }
 }
+
+
+
 pub fn loadFromFolder(Directory: String, PrefixMap:String, PrefixSprite: String)->folder{
     let mut folderpr = folder{
         maps: Vec::new(),
