@@ -3,26 +3,30 @@
 #if defined(_WIN64)
     #define PLAT "win"
     #include <windows.h>
-    int *getwinsize(){
+    int getwinsizeROW(){
         CONSOLE_SCREEN_BUFFER_INFO csbi;
-        int columns, rows;
+        int rows;
+
+        GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+        
+        rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
+
+        
+        
+        return rows;
+    }
+    int getwinsizeCOL(){
+        CONSOLE_SCREEN_BUFFER_INFO csbi;
+        int columns;
 
         GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
         columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
-        rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
-
-        printf("columns: %d\n", columns);
-        printf("rows: %d\n", rows);
-        int x[2] = {columns, rows};
+      
         
         
-        return x;
+        return columns;
     }
-    void setwinsize(){
-       // printf("\e[8;50;100t");
-
-
-    }
+    
 #elif defined(__linux__)
     #define PLAT "lin" 
     #include <sys/ioctl.h>

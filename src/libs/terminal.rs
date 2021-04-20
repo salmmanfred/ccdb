@@ -2,14 +2,17 @@ use std::process::Command;
 
 
 extern {
-    fn getwinsize() -> [usize; 2];
-    fn setwinsize();
+    fn getwinsizeROW() -> usize;
+    fn getwinsizeCOL() -> usize;
+
 
 }
-pub fn getTerminalSize()->[i64;2]{
-    let x: [i64;2];
+pub fn getTerminalSize()->[usize; 2]{
+    let x: [usize;2];
+   
     unsafe{
-        x = [getwinsize()[0] as i64, getwinsize()[1] as i64];
+        
+        x = [getwinsizeCOL(), getwinsizeROW()];
     }
     return x;
 }
