@@ -18,7 +18,7 @@ void xs(x,y){
         COORD Position;
 
         hOut = GetStdHandle(STD_OUTPUT_HANDLE);
-
+        
         Position.X = x;
         Position.Y = y;
         SetConsoleCursorPosition(hOut, Position);
@@ -78,4 +78,32 @@ void show(){
     }
 
 }
+int GetPosCurX(){
+    HANDLE hOut;
+    DWORD STD_D = -10;
+    hOut = GetStdHandle(STD_D);
+
+    PCONSOLE_SCREEN_BUFFER_INFO o;
+    CONSOLE_SCREEN_BUFFER_INFO x;
+    GetConsoleScreenBufferInfo(hOut,o,&x);
+
+    printf("x %d  y %d \n",x.dwCursorPosition.X,x.dwCursorPosition.Y);
+    return x.dwCursorPosition.X;
+ 
+}
+int GetPosCurY(){
+    HANDLE hut;
+    DWORD STD_D = -10;
+    hut = GetStdHandle(STD_D);
+
+    PCONSOLE_SCREEN_BUFFER_INFO o;
+
+    CONSOLE_SCREEN_BUFFER_INFO x;
+    GetConsoleScreenBufferInfo(hut,o,&x);
+
+    
+    return x.dwCursorPosition.Y;
+ 
+}
+
 

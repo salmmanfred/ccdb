@@ -19,7 +19,7 @@ use ccdb::keycode; // For key input
 use ccdb::cursor; // for moving the cursor
 use ccdb::sprite; // for sprites
 use ccdb::collision; // for collision
-
+use ccdb::ui;// ui library 
 
 
 
@@ -72,6 +72,15 @@ pub fn main() {
     terminal::setTerminalSize(50,20);// change terminal size
 
 
+    // create 2 buttons and add them to the ui component 
+    let button = ui::button::new(0,"test");
+    let button2 = ui::button::new(1,"test2");
+
+    let mut ui = ui::UI::new(keycode::W,keycode::S,keycode::ENTER);
+    ui.buttons.push(button);
+    ui.buttons.push(button2);
+
+
     let mut dir = 0;
     loop {
         
@@ -79,6 +88,24 @@ pub fn main() {
         cursor::hideCursor();
         //a.render(&mut f);
         println!("{}",a.render(&mut f));//render the entire screen
+
+        ui.rend();// render the ui
+       
+        match ui.buttons[0].getStatus(){// getting if a button is pressed down or hoverd over or not 
+            ui::buttonAction::press =>{
+                println!("yes");
+            }
+            ui::buttonAction::hover =>{
+                println!("maybe");
+            }
+            ui::buttonAction::idle =>{
+                println!("no not");
+            }
+            _ =>{
+
+            }
+        }
+
         f.sprite[0].movexy(1, 0);
         
         //standard key input system
@@ -165,6 +192,6 @@ v0.8.0: Adding a way to load in a folder  DONE
 v0.9.0: Getting the code ready for 1.0.0  DONE  
 v1.0.0: optimization  DONE  
 v1.1.0: Terminal control  DONE  
-v1.2.0: Animation for sprites  
+v1.2.0: UI   
 v1.3.0: No plans  
 v1.4.0: No plans  

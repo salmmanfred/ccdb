@@ -4,6 +4,7 @@
 extern {
     fn getkeyd()->usize;
     fn keydownd()->usize;
+    fn safekey()->usize;
 
 }
 
@@ -27,4 +28,11 @@ pub fn keydown() -> bool{
 pub fn getkey()->usize{
     //println!("ok");
     call()
+}
+pub fn safegetkey()->usize{// not really safe but eh
+    let mut a = 0;
+    unsafe {
+        a = safekey()
+    }
+    return a
 }

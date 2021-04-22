@@ -28,3 +28,13 @@ int keydownd(){
 
     return 0;
 }
+int safekey(){
+    if (_kbhit()){
+         int key_code = _getch();
+     
+
+
+        return key_code;
+    }
+    return 0;
+}

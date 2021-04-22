@@ -21,3 +21,6 @@ pub mod acore;
 // ! physics
 #[path = "physics/physics.rs"]pub mod physics;
 #[path = "physics/collision.rs"]pub mod collision;
+
+// ! UI
+#[path = "UI/ui.rs"] pub mod ui;

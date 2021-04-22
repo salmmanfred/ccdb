@@ -27,6 +27,18 @@ pub const Z: usize = 60;
 
 pub const ESC: usize = 27;
 pub const SPACE: usize = 32;
+pub const ENTER: usize = 13;
+
+
+pub const ISARROW: usize = 224;
+pub const UP_ARROW: usize = 72;
+pub const DOWN_ARROW: usize = 80;
+pub const LEFT_ARROW: usize = 75;
+pub const RIGHT_ARROW: usize = 77;
+
+
+
+
 
 
 
