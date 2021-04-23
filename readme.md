@@ -22,7 +22,8 @@ If you have linux it would be nice if you could test the keyin and cursor librar
 ## Buttons system
 ![2021-04-23_18-22-30](https://user-images.githubusercontent.com/32799244/115901069-035ad700-a461-11eb-906b-976c37b09f4a.gif)
 
-  
+# Releases  
+[Releases](https://github.com/salmmanfred/ccdb/releases)
 
 # Roadmap  
 v0.2.0: Add a function to find all of a certain character or just the first one  DONE  
