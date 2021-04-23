@@ -3,8 +3,8 @@
 use std::time::Duration;
 use std::{thread, time};
 use crate::loader;
-use crate::colour;
-use crate::check::{threadCheck};
+//use crate::colour;
+use crate::check::{thread_check};
 use crate::physics;
 use crate::sprite;
 use std::sync::{Arc, Mutex};
@@ -14,21 +14,21 @@ use std::time::{Instant};
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 //this is the core used for things like declaring the line lenght and amount of lines
-pub struct core{
+pub struct Core{
     pub name: String,
     pub desc: String,
-    pub linelenght: i64,
+    pub line_lenght: i64,
     pub lines: i64,
     pub debug: bool,
     pub threads: i8,
     pub output_string: bool,
 }
 // this is what core "compiles" into so that the core can use the data easier
-pub struct cort{
-    FCXO: String,
+pub struct Cort{
+    name_desc: String,
     v: i64,
-    pub BLOCKXLINE: i64,
-    pub LINES: i64,
+    pub char_x_line: i64,
+    pub lines: i64,
     // prevmap is used so you dont render the same thing more than once saving some cpu usage
     prevmap: loader::map,
     thr: i8,
@@ -44,8 +44,8 @@ PREVX: Vec<i64>,
     PREVY: Vec<i64>,
     PREVG: Vec<String>,
     */
-// screen is the screen which stores the current map data
-pub struct screen{
+// Screen is the Screen which stores the current map data
+pub struct Screen{
     pub chars: Vec<String>,
     pub x: Vec<i64>,
     pub y: Vec<i64>,
@@ -54,16 +54,16 @@ pub struct screen{
     
 }
 
-// used for the set up of cort 
-impl core{
-    pub fn setup(&self)->cort{
+// used for the set up of Cort 
+impl Core{
+    pub fn setup(&self)->Cort{
 
        
         self.setup001()
         
 
     }
-    fn setup001(&self)-> cort{ // compiles core into cort where data and meta data is stored 
+    fn setup001(&self)-> Cort{ // compiles core into Cort where data and meta data is stored 
         let xx = &self.name.to_string();
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
@@ -72,12 +72,12 @@ impl core{
 
         }
         //println!("{}",xxs);
-        threadCheck(self.threads, self.lines);
-        cort{
-            FCXO: xxs,
+        thread_check(self.threads, self.lines);
+        Cort{
+            name_desc: xxs,
             v: 1,
-            BLOCKXLINE: self.linelenght,
-            LINES: self.lines,
+            char_x_line: self.line_lenght,
+            lines: self.lines,
             prevmap: loader::map{
                 x: Vec::new(),
                 y: Vec::new(),
@@ -97,12 +97,12 @@ impl core{
 
 
 
-impl cort{
+impl Cort{
     fn equall(&self, map: loader::map)-> bool{
 
         if self.prevmap.x == map.x  && self.prevmap.y == map.y && self.prevmap.chars == map.chars{
 
-            return true  // checks if the screen and a map is the same 
+            return true  // checks if the Screen and a map is the same 
 
             
         }
@@ -112,19 +112,19 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &mut screen)-> String{
+    pub fn render(&mut self, Screen: &mut Screen)-> String{
 
        // ■
         
         
-        thread::sleep(time::Duration::from_millis(screen.delay));
+        thread::sleep(time::Duration::from_millis(Screen.delay));
 
-        println!("{}",self.FCXO);
-        physics::Arenderphysics(screen, self.physobj.clone(),self.gravity);
-        if !self.equall(screen.gmap()){ // helps preformance by not rendering the same window again and again and again
+        println!("{}",self.name_desc);
+        physics::a_render_physics(Screen, self.physobj.clone(),self.gravity);
+        if !self.equall(Screen.gmap()){ // helps preformance by not rendering the same window again and again and again
            
             
-            self.prevmap = screen.run(self);  // starts the screen rendering 
+            self.prevmap = Screen.run(self);  // starts the Screen rendering 
         }else{
             if !self.output_string{
                 println!("{}",self.renderd)
@@ -139,44 +139,44 @@ impl cort{
         
 
     }
-    pub fn addphysics(&mut self,pos: i64){// adds a object to be renderd for phycis later 
+    pub fn add_physics(&mut self,pos: i64){// adds a object to be renderd for phycis later 
         self.physobj.push(pos);
     }
-    pub fn addphysicsForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
-        for x in screen.findAllOfX(chr){
+    pub fn add_physics_for_all_X(&mut self,Screen: &Screen,chr: String){// adds allot of objects to be renderd for phycis later 
+        for x in Screen.find_all_of_X(chr){
             self.physobj.push(x);
         }
     }
-    pub fn removephysics(&mut self,pos: i64){ // removes physics from object
+    pub fn remove_physics(&mut self,pos: i64){ // removes physics from object
         self.physobj.retain(|&x| x != pos);
     }
-    pub fn removephysicsForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
-        for x in screen.findAllOfX(chr){
-            self.removephysics(x);
+    pub fn remove_physics_for_all_X(&mut self,Screen: &Screen,chr: String){// removes allot of objects to be renderd for phycis
+        for x in Screen.find_all_of_X(chr){
+            self.remove_physics(x);
         }
     }
-    pub fn changePhysics(&mut self, grav: i64){ 
+    pub fn change_physics(&mut self, grav: i64){ 
         self.gravity = grav;
     }
-    /*pub fn changeLINES(&mut self,newlines: i64){
-        self.LINES = newlines;
+    /*pub fn changelines(&mut self,newlines: i64){
+        self.lines = newlines;
     }
     pub fn changeXperLine(&mut self,x: i64){
-        self.BLOCKXLINE = x;
+        self.char_x_line = x;
     }*/
 
 }
-impl screen{
+impl Screen{
 
     
-    pub fn run(&self,cort:&mut  cort) -> loader::map{
+    pub fn run(&self,Cort:&mut  Cort) -> loader::map{
         let now = Instant::now();
 
         // = Vec::with_capacity(10);
         //parses the data correctly so that it gets outputed correctly
-        let thr = cort.thr;
-        let size = cort.LINES;
-        let size2 = cort.BLOCKXLINE;
+        let thr = Cort.thr;
+        let size = Cort.lines;
+        let size2 = Cort.char_x_line;
         
         let mut aot = 0;
         let mut sso = 0;
@@ -355,28 +355,28 @@ impl screen{
             fdata.push_str(&x.lock().unwrap());
         }
 
-        if !cort.output_string{// checks if it should print it out or not
+        if !Cort.output_string{// checks if it should print it out or not
             println!("{}",fdata);
         }
             
             //println!("");
-        cort.renderd = fdata;
-        cort.extime = now.elapsed().as_millis() as i64; 
+        Cort.renderd = fdata;
+        Cort.extime = now.elapsed().as_millis() as i64; 
         
         
-        self.gmap()// returns the current map of screen to be put in prevmap.
+        self.gmap()// returns the current map of Screen to be put in prevmap.
         
     }
 
 
     
-    pub fn loadmap(&mut self, map:loader::map){ // for loading a map into the screen
+    pub fn load_map(&mut self, map:loader::map){ // for loading a map into the Screen
         self.x = map.x;
         self.y = map.y;
         self.chars = map.chars;
 
     }
-    pub fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
+    pub fn gmap(&self)->loader::map{ // makes a map out of the current data in Screen
         
             let mut charss = self.chars.clone();
             let mut xxx = self.x.clone();
@@ -395,7 +395,7 @@ impl screen{
             }
         
     }
-    pub fn findX(&self, ch: String) -> i64{ // for finding a character 
+    pub fn find_X(&self, ch: String) -> i64{ // for finding a character 
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{
                 return x as i64
@@ -404,7 +404,7 @@ impl screen{
         0
 
     }
-    pub fn findAllOfX(&self, ch: String) -> Vec<i64>{ // returns a vector of the position of all instanses of a certain character
+    pub fn find_all_of_X(&self, ch: String) -> Vec<i64>{ // returns a vector of the position of all instanses of a certain character
         let mut all: Vec<i64> = Vec::new();
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{

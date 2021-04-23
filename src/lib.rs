@@ -24,3 +24,41 @@ pub mod acore;
 
 // ! UI
 #[path = "UI/ui.rs"] pub mod ui;
+
+pub enum orders{
+    rend,
+    ui,
+    keyboard,
+    misc,
+
+}
+
+pub struct order{
+    ex: i64,
+}
+impl order{
+    pub fn new()->order{
+        order{
+            ex: 0,
+        }
+    }
+    pub fn next(&mut self)->orders{
+        if self.ex == 0{
+            return orders::rend
+        }
+        if self.ex == 1{
+            return orders::ui
+
+        }
+        if self.ex == 2{
+            return orders::keyboard
+        }
+        if self.ex == 4{
+            self.ex = 0;
+        }
+        self.ex += 1;
+
+        return orders::misc
+
+    }
+}

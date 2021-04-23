@@ -5,19 +5,19 @@ use crate::collision;
 use crate::loader::{map};
 //const Gdrag: i64 = 1;
 
-pub fn Arenderphysics(screen: &mut acore::screen,physobj: Vec<i64>, G: i64){ // since acore and bcore use diffrent screens i have to do it this way
-    let mut map = screen.gmap();
+pub fn a_render_physics(screen: &mut acore::Screen,physobj: Vec<i64>, G: i64){ // since acore and bcore use diffrent screens i have to do it this way
+    let map = screen.gmap();
     let phsob = physobj;
-    screen.loadmap(renderphys(map, phsob,G));
+    screen.load_map(renderphys(map, phsob,G));
 }
-pub fn Brenderphysics(screen: &mut bcore::screen,physobj: Vec<i64>, G: i64){
-    let mut map = screen.gmap();
+pub fn b_render_physics(screen: &mut bcore::Screen,physobj: Vec<i64>, G: i64){
+    let map = screen.gmap();
     let phsob = physobj;
-    screen.loadmap(renderphys(map, phsob,G));
+    screen.load_map(renderphys(map, phsob,G));
 }
 
 
-fn renderphys(screen: map,physobj: Vec<i64>,Gdrag: i64)->map{
+fn renderphys(screen: map,physobj: Vec<i64>,g_drag: i64)->map{
     let mut mp = map{
         chars: screen.chars,
         x: screen.x,
@@ -26,9 +26,9 @@ fn renderphys(screen: map,physobj: Vec<i64>,Gdrag: i64)->map{
     };
     
     for i in physobj{// just adds physics to all objects 
-        for x in 0..Gdrag{
+        for x in 0..g_drag{
             mp.y[i as usize] += 1;
-            if collision::getcollision(i as usize, &mut mp){
+            if collision::get_collision(i as usize, &mut mp){
                 mp.y[i as usize] -= 1;
 
             }

@@ -14,7 +14,7 @@ pub fn call() -> usize{
     }
 }
 
-pub fn keydown() -> bool{
+pub fn key_down() -> bool{
     unsafe{
         if keydownd() == 1{
             return true
@@ -25,11 +25,11 @@ pub fn keydown() -> bool{
     }
 }
 
-pub fn getkey()->usize{
+pub fn get_key()->usize{
     //println!("ok");
     call()
 }
-pub fn safegetkey()->usize{// not really safe but eh
+pub fn safe_get_key()->usize{// not really safe but eh
     let mut a = 0;
     unsafe {
         a = safekey()

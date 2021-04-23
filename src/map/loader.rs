@@ -52,7 +52,7 @@ pub fn loadvec(file: Vec<String>) -> map{
         y:y,
     }
 }
-pub fn toMap(str: String)-> map{ //makes a string into a map 
+pub fn to_map(str: String)-> map{ //makes a string into a map 
     let sttr = str;
     let mut vecStr: Vec<String> = Vec::new();
     let vecsttr: Vec<&str> = sttr.split("\n").collect();
@@ -71,7 +71,7 @@ pub struct folder{
     meta: Vec<i8>,
 }
 impl folder{
-    pub fn loadAssetMap(&self, name:&str)->Result<map,String>{// find and push the map
+    pub fn load_asset_map(&self, name:&str)->Result<map,String>{// find and push the map
          
         for x in 0..self.names.len(){
             if self.names[x] == name{
@@ -86,7 +86,7 @@ impl folder{
         Err("Loading error".to_string())
 
     }
-    pub fn loadAssetSprite(&self,name:&str)->Result<sprite::sprite,String>{// find and push the sprite
+    pub fn load_asset_sprite(&self,name:&str)->Result<sprite::sprite,String>{// find and push the sprite
         for x in 0..self.names.len(){
             if self.names[x] == name{
                 if self.meta[x] == 1{
@@ -103,26 +103,26 @@ impl folder{
 
 
 
-pub fn loadFromFolder(Directory: String, PrefixMap:String, PrefixSprite: String)->folder{
+pub fn load_from_folder(directory: String, prefix_map:String, prefix_sprite: String)->folder{
     let mut folderpr = folder{
         maps: Vec::new(),
         names: Vec::new(),
         meta: Vec::new(),
     };
-    for entry in fs::read_dir(Directory).expect("Error reading folder") { // parses the folder into a folder struct 
+    for entry in fs::read_dir(directory).expect("Error reading folder") { // parses the folder into a folder struct 
         let entry = entry.expect("error").path().into_os_string().into_string().expect("error");
         let entry_n = entry.split("/").collect::<Vec<&str>>();//temp parse var 
         let entry_n = entry_n[entry_n.len()-1].split(".").collect::<Vec<&str>>();// temp parse var
 
         let entry_name = entry_n[0];//final name 
 
-        if entry.contains(&PrefixMap){//finds all map elements 
+        if entry.contains(&prefix_map){//finds all map elements 
             folderpr.maps.push(load(&entry.clone()));
             folderpr.names.push(entry_name.to_string());
             folderpr.meta.push(0);
 
         }
-        if entry.contains(&PrefixSprite){// finding all sprite elements 
+        if entry.contains(&prefix_sprite){// finding all sprite elements 
             folderpr.maps.push(load(&entry));
             folderpr.names.push(entry_name.to_string());
             folderpr.meta.push(1);

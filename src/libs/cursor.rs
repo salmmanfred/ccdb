@@ -17,7 +17,7 @@ pub fn clear(){
         clears();
     }
 }
-pub fn hideCursor(){
+pub fn hide_cursor(){
     unsafe{
         hide();
     }

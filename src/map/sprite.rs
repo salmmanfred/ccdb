@@ -6,14 +6,14 @@ pub struct sprite{
     pub y: Vec<i64>,
 }
 impl sprite{
-    pub fn movexy(&mut self, modifX: i64, modifY: i64){
+    pub fn move_xy(&mut self, modifX: i64, modifY: i64){
        for x in 0..self.x.len(){
             self.x[x] += modifX;
             self.y[x] += modifY;
 
        }
     }
-    pub fn setxy(&mut self, x: i64, y: i64){
+    pub fn set_xy(&mut self, x: i64, y: i64){
         let difx = self.x[0] - x;
         let dify = self.y[0]-y;
         for x in 0..self.x.len(){

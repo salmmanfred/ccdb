@@ -7,7 +7,7 @@ extern {
 
 
 }
-pub fn getTerminalSize()->[usize; 2]{
+pub fn get_terminal_size()->[usize; 2]{
     let x: [usize;2];
    
     unsafe{
@@ -16,7 +16,7 @@ pub fn getTerminalSize()->[usize; 2]{
     }
     return x;
 }
-pub fn setTerminalSize(x:usize,y:usize){
+pub fn set_terminal_size(x:usize,y:usize){
     //mode con:cols=80 lines=100
     let output = if cfg!(target_os = "windows") {
         Command::new("cmd")

@@ -1,4 +1,4 @@
-//! Olive core
+//! Olive Core
 // Honestly would remove it if it wasent so damn good at its job some how 
 
 use std::time::Duration;
@@ -8,23 +8,23 @@ use crate::physics;
 use crate::sprite;
 
 
-// core cort and screen is the same as in banana
+// Core Cort and Screen is the same as in banana(mostly)
 
-pub struct core{
+pub struct Core{
     pub name: String,
     pub desc: String,
-    pub linelenght: i64,
+    pub line_lenght: i64,
     pub lines: i64,
     pub debug: bool,
     pub threads: i8,
     pub output_string: bool,
 
 }
-pub struct cort{
-    FCXO: String,
+pub struct Cort{
+    name_desc: String,
     v: i64,
-    pub BLOCKXLINE: i64,
-    pub LINES: i64,
+    pub char_x_line: i64,
+    pub lines: i64,
     prevmap: loader::map,
     renderd: String,
     physobj: Vec<i64>,
@@ -39,7 +39,7 @@ PREVX: Vec<i64>,
     PREVG: Vec<String>,
     */
 
-pub struct screen{
+pub struct Screen{
     pub chars: Vec<String>,
     pub x: Vec<i64>,
     pub y: Vec<i64>,
@@ -47,27 +47,27 @@ pub struct screen{
     pub sprite: Vec<sprite::sprite>,
 
 }
-impl core{
-    pub fn setup(&self)->cort{
+impl Core{
+    pub fn setup(&self)->Cort{
 
        
         self.setup001()
         
 
     }
-    fn setup001(&self)-> cort{
+    fn setup001(&self)-> Cort{
         let xx = &self.name.to_string();
         let mut xxs = xx.to_string();
         xxs.push_str(&self.desc);
         if self.debug{
-            xxs.push_str(" CCDB BCORE");
+            xxs.push_str(" CCDB BCore");
         }
         //println!("{}",xxs);
-        cort{
-            FCXO: xxs,
+        Cort{
+            name_desc: xxs,
             v: 1,
-            BLOCKXLINE: self.linelenght,
-            LINES: self.lines,
+            char_x_line: self.line_lenght,
+            lines: self.lines,
             prevmap: loader::map{
                 x: Vec::new(),
                 y: Vec::new(),
@@ -84,7 +84,7 @@ impl core{
     
 }
 
-impl cort{
+impl Cort{
     fn equall(&self, map: loader::map)-> bool{
 
         if self.prevmap.x == map.x && self.prevmap.y == map.y && self.prevmap.chars == map.chars {
@@ -94,19 +94,19 @@ impl cort{
 
         return false
     }
-    pub fn render(&mut self, screen: &mut screen) -> String{
+    pub fn render(&mut self, Screen: &mut Screen) -> String{
 
        // println!("■".green())
         
         
-        thread::sleep(time::Duration::from_millis(screen.delay));
-        physics::Brenderphysics(screen, self.physobj.clone(),self.gravity);
-        println!("{}",self.FCXO);
+        thread::sleep(time::Duration::from_millis(Screen.delay));
+        physics::b_render_physics(Screen, self.physobj.clone(),self.gravity);
+        println!("{}",self.name_desc);
 
-        if !self.equall(screen.gmap()){
-            // sends it to the screen for render
+        if !self.equall(Screen.gmap()){
+            // sends it to the Screen for render
         
-            self.prevmap = screen.run(self.LINES,self.BLOCKXLINE, self);
+            self.prevmap = Screen.run(self.lines,self.char_x_line, self);
         }
         if self.output_string == false{
             println!("{}",self.renderd);
@@ -120,28 +120,28 @@ impl cort{
     fn prvrend(&mut self, f: String){ // for putting the previous render in the self.renderd
         self.renderd = f;
     }
-    pub fn addphysics(&mut self,pos: i64){ // adds a object to be renderd for phycis later 
+    pub fn add_physics(&mut self,pos: i64){ // adds a object to be renderd for phycis later 
         self.physobj.push(pos);
     }
-    pub fn addphysicsForAllX(&mut self,screen: &screen,chr: String){// adds allot of objects to be renderd for phycis later 
-        for x in screen.findAllOfX(chr){
+    pub fn add_physics_for_all_X(&mut self,Screen: &Screen,chr: String){// adds allot of objects to be renderd for phycis later 
+        for x in Screen.find_all_of_X(chr){
             self.physobj.push(x);
         }
     }
-    pub fn removephysics(&mut self,pos: i64){ // removes physics
+    pub fn remove_physics(&mut self,pos: i64){ // removes physics
         self.physobj.retain(|&x| x != pos);
     }
-    pub fn removephysicsForAllX(&mut self,screen: &screen,chr: String){// removes allot of objects to be renderd for phycis
-        for x in screen.findAllOfX(chr){
-            self.removephysics(x);
+    pub fn remove_physics_for_all_X(&mut self,Screen: &Screen,chr: String){// removes allot of objects to be renderd for phycis
+        for x in Screen.find_all_of_X(chr){
+            self.remove_physics(x);
         }
     }
-    pub fn changePhysics(&mut self, grav: i64){ // change the physics to be what ever you want it to be 
+    pub fn change_physics(&mut self, grav: i64){ // change the physics to be what ever you want it to be 
         self.gravity = grav;
     }
 }
-impl screen{
-    pub fn run(&self, size: i64,size2: i64, cort: &mut cort) -> loader::map{
+impl Screen{
+    pub fn run(&self, size: i64,size2: i64, Cort: &mut Cort) -> loader::map{
         let mut line: String = "".to_string();
         let mut X = self.x.clone();// load in a sprite
         let mut Y = self.y.clone();
@@ -171,17 +171,17 @@ impl screen{
                 }
             }*/
             // makes the line and prints it 
-            line.push_str(&format!("{}\n",&self.makeline(betterx,bettern,size2)));
+            line.push_str(&format!("{}\n",&self.make_line(betterx,bettern,size2)));
 
         }
-        cort.prvrend(line);
+        Cort.prvrend(line);
         loader::map{
             x: X.clone(),
             y: Y.clone(),
             chars: C.clone(),
         }
     }
-    pub fn makeline(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{
+    pub fn make_line(&self, betterx: Vec<i64>,bettern: Vec<String>,size:i64) -> String{
         let mut vc: Vec<&str> = Vec::new();
         // really complicated version of what was in banana
         for i in 0..size{// size is the lenght of the entire line
@@ -219,14 +219,14 @@ impl screen{
         vc.into_iter().collect::<String>()
 
     }
-    pub fn loadmap(&mut self, map:loader::map){
-        // loads the map into the screen
+    pub fn load_map(&mut self, map:loader::map){
+        // loads the map into the Screen
         self.x = map.x;
         self.y = map.y;
         self.chars = map.chars;
 
     }
-    pub fn gmap(&self)->loader::map{ // makes a map out of the current data in screen
+    pub fn gmap(&self)->loader::map{ // makes a map out of the current data in Screen
         
         let mut charss = self.chars.clone();
         let mut xxx = self.x.clone();
@@ -245,7 +245,7 @@ impl screen{
         }
     
 }
-    pub fn findX(&self, ch: String) -> i64{
+    pub fn find_X(&self, ch: String) -> i64{
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{
                 return x as i64
@@ -254,7 +254,7 @@ impl screen{
         0
 
     }
-    pub fn findAllOfX(&self, ch: String) -> Vec<i64>{
+    pub fn find_all_of_X(&self, ch: String) -> Vec<i64>{
         let mut all: Vec<i64> = Vec::new();
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{

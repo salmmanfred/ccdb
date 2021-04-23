@@ -1,4 +1,4 @@
-pub const reset: &str = "\x1b[0m";
+/*pub const reset: &str = "\x1b[0m";
 pub const bright:&str = "\x1b[1m";
 pub const dim:&str = "\x1b[2m";
 pub const underscore:&str = "\x1b[4m";
@@ -24,4 +24,4 @@ pub const BGmagenta:&str = "\x1b[45m";
 pub const BGcyan:&str = "\x1b[46m";
 pub const BGwhite:&str = "\x1b[47m";
 
-// ANSI colour stuff
+// ANSI colour stuff*/

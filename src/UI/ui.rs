@@ -4,10 +4,10 @@ extern{
     fn GetPosCurX() -> usize;
     fn GetPosCurY() -> usize;
 }
-pub enum buttonAction{
-    press,
-    idle,
-    hover,
+pub enum button_action{
+    Press,
+    Idle,
+    Hover,
 }
 
 pub struct button{
@@ -25,78 +25,88 @@ impl button{
             hover: false,
         }
     }
-    pub fn getStatus(&self ) -> buttonAction{//gets the status
+    pub fn get_status(&self ) -> button_action{//gets the status
         
         if self.imsel
         {
-            return buttonAction::press
+            return button_action::Press
         }
         
         if self.hover{
-            return buttonAction::hover
+            return button_action::Hover
         }
-        return buttonAction::idle
+        return button_action::Idle
     }
 }
 
 pub struct UI{
     pub buttons: Vec<button>,
     size: [i64;2],
-    controls: [usize; 3],
+    //controls: [usize; 3],
     index: i64,
     ent: bool,// if enter is pressed 
+    mt: i64,
    
 
 }
 impl UI{
-    pub fn new(up:usize, down:usize,select:usize)->UI{
+    pub fn new()->UI{
         UI{
             buttons: Vec::new(),
             size: [100,100],
-            controls: [up,down,select],
+            //controls: [up,down,select],
             index: 0,
             ent: false,
+            mt: 0,
         }
     }
     pub fn ups(&mut self){// get the keyboard input stuff
-        if keyin::keydown(){
+   
+            //if keyin::key_down(){
 
+            
+                match keyin::safe_get_key(){
+                    72=>{
+                        
+                        self.index -= 1;
+                            
+                    }
+                    80 =>{
+                        
+                        self.index += 1;
+                            
+                    }
+                    
+                    13 =>{
+                        self.ent = true;
+                        //break;
+                    }
+                    _ =>{
+                        
+                    
+                    }
+                }
+            //}
         
-            match keyin::getkey(){
-                72=>{
-                    
-                    self.index -= 1;
-                        
-                }
-                80 =>{
-                    
-                    self.index += 1;
-                        
-                }
-                
-                13 =>{
-                    self.ent = true;
-                    
-                }
-                _ =>{
-                    
-                  
-                }
-            }
-        }
     }
-    pub fn rend(&mut self){// render it all 
+    pub fn rend(&mut self){
+        
+            self.rend_backend();
+          
+    }
+    pub fn rend_backend(&mut self){// render it all 
         self.ent = false;
      
 
         let mut i = 0;
         let mut sele = false;
         for x in 0..10{// stupid solution to a stupid issue
-        self.ups();
+            self.ups();
+
+            
         }
-        /*let up = self.controls[0];
-        let down = self.controls[1];
-        let select = self.controls[2];*/
+        
+        
         
       
         
