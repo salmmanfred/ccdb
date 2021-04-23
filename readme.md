@@ -3,7 +3,7 @@
   
 # How to use  
   
-  
+[Tutorial](https://github.com/salmmanfred/ccdb/blob/master/help/tutorial.md)
   
 # Multi threading  
 If you want to use multi threading you have to use ACore  
