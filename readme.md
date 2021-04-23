@@ -216,6 +216,6 @@ v0.8.0: Adding a way to load in a folder  DONE
 v0.9.0: Getting the code ready for 1.0.0  DONE  
 v1.0.0: optimization  DONE  
 v1.1.0: Terminal control  DONE  
-v1.2.0: UI   DONE
+v1.2.0: UI DONE  
 v1.3.0: No plans  
 v1.4.0: No plans  
