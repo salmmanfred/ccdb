@@ -174,10 +174,9 @@ pub fn main() {
 ```  
   
 ## Differance between BCore and ACore  
-Core is mutli threaded and does not work very efficiently with big amount of text  
+ACore is  Multi threaded while BCore is single threaded  
 BCore is the old algorithm for making the text  
 Their names are ACore: Banana Core, BCore: Olive Core  
-BCore is faster than ACore but BCore is just weird  
 
 ## UI  
 There is an issue where the keyboard things get really slow when using the ui    
