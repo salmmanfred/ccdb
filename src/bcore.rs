@@ -139,6 +139,7 @@ impl Cort{
     pub fn change_physics(&mut self, grav: i64){ // change the physics to be what ever you want it to be 
         self.gravity = grav;
     }
+    
 }
 impl Screen{
     pub fn run(&self, size: i64,size2: i64, Cort: &mut Cort) -> loader::map{
@@ -262,6 +263,12 @@ impl Screen{
             }
         }
         all
+    }
+    pub fn push_char(&mut self, x: i64, y: i64, char: &str){
+        self.x.push(x);
+        self.y.push(y);
+        self.chars.push(char.to_string());
+
     }
 }
 

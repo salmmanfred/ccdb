@@ -25,14 +25,17 @@ impl button{
             hover: false,
         }
     }
-    pub fn get_status(&self ) -> button_action{//gets the status
+    pub fn get_status(&mut self ) -> button_action{//gets the status
         
         if self.imsel
         {
+            self.imsel = false;
             return button_action::Press
         }
         
         if self.hover{
+            self.hover = false;
+
             return button_action::Hover
         }
         return button_action::Idle

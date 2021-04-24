@@ -395,6 +395,12 @@ impl Screen{
             }
         
     }
+    pub fn push_char(&mut self, x: i64, y: i64, char: &str){
+        self.x.push(x);
+        self.y.push(y);
+        self.chars.push(char.to_string());
+
+    }
     pub fn find_X(&self, ch: String) -> i64{ // for finding a character 
         for x in 0..self.chars.len(){
             if self.chars[x] == ch{
