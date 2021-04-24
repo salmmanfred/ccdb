@@ -17,7 +17,9 @@ If you have linux it would be nice if you could test the keyin and cursor librar
   
 # screenshots / gifs
 
-![2021-04-23_18-17-31](https://user-images.githubusercontent.com/32799244/115900503-508a7900-a460-11eb-8bac-21ee4e9658d7.gif)
+![2021-04-23_18-17-31](https://user-images.githubusercontent.com/32799244/115900503-508a7900-a460-11eb-8bac-21ee4e9658d7.gif)  
+  
+![2021-04-24_14-32-41](https://user-images.githubusercontent.com/32799244/115958979-1970a200-a50a-11eb-8e06-280bfefca134.gif)
 
 ## Buttons system
 ![2021-04-23_18-22-30](https://user-images.githubusercontent.com/32799244/115901069-035ad700-a461-11eb-906b-976c37b09f4a.gif)
