@@ -102,6 +102,14 @@ impl Cort {
         }
         "".to_string()
     }
+    pub fn render_blank(&mut self, screen: &mut Screen) {
+        let map = screen.gmap();
+        screen.load_map(loader::to_map(" \n".to_string()));
+        screen.run(self.lines, self.char_x_line,self);
+        screen.x = map.x;
+        screen.y = map.y;
+        screen.chars = map.chars;
+    }
     fn prvrend(&mut self, f: String) {
         // for putting the previous render in the self.renderd
         self.renderd = f;
@@ -206,15 +214,18 @@ impl Screen {
     }
     pub fn load_map(&mut self, map: loader::map) {
         // for loading a map into the Screen
-        self.x = map.x;
-        self.y = map.y;
-        self.chars = map.chars;
-        self.orgin = self.cgmap(); // get the orgin
+        self.x = map.x.clone();
+        self.y = map.y.clone();
+        self.chars = map.chars.clone();
+        //self.orgin = map.clone(); // set the orgin
+    }
+    pub fn set_orgin(&mut self,map: loader::map){
+        self.orgin = map;
     }
     pub fn return_to_orgin(&mut self) {
-        self.x = self.orgin.x.clone();
-        self.y = self.orgin.y.clone();
-        self.chars = self.orgin.chars.clone();
+       
+        self.load_map(self.orgin.clone());
+        
     }
     pub fn cgmap(&self) -> loader::map {
         // clean get map

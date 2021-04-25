@@ -124,8 +124,10 @@ impl Cort {
     pub fn render_blank(&mut self, screen: &mut Screen) {
         let map = screen.gmap();
         screen.load_map(loader::to_map(" \n".to_string()));
-        self.prevmap = screen.run(self);
-        screen.load_map(map);
+        screen.run(self);
+        screen.x = map.x;
+        screen.y = map.y;
+        screen.chars = map.chars;
     }
     pub fn add_physics(&mut self, pos: i64) {
         // adds a object to be renderd for phycis later
@@ -163,6 +165,7 @@ impl Screen {
 
         // = Vec::with_capacity(10);
         //parses the data correctly so that it gets outputed correctly
+        //getting the correct data and gets how many threads we need and the y size and x size
         let thr = Cort.thr;
         let size = Cort.lines;
         let size2 = Cort.char_x_line;
@@ -330,15 +333,18 @@ impl Screen {
 
     pub fn load_map(&mut self, map: loader::map) {
         // for loading a map into the Screen
-        self.x = map.x;
-        self.y = map.y;
-        self.chars = map.chars;
-        self.orgin = self.cgmap(); // get the orgin
+        self.x = map.x.clone();
+        self.y = map.y.clone();
+        self.chars = map.chars.clone();
+        //self.orgin = map.clone(); // set the orgin
+    }
+    pub fn set_orgin(&mut self,map: loader::map){
+        self.orgin = map;
     }
     pub fn return_to_orgin(&mut self) {
-        self.x = self.orgin.x.clone();
-        self.y = self.orgin.y.clone();
-        self.chars = self.orgin.chars.clone();
+       
+        self.load_map(self.orgin.clone());
+        
     }
     pub fn cgmap(&self) -> loader::map {
         // clean get map
