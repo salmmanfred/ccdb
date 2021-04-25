@@ -8,7 +8,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
   
 ```rust  
 extern crate ccdb;
-use ccdb::acore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
+use ccdb::bcore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
 use ccdb::collision; // for collision
 use ccdb::cursor; // for moving the cursor
 use ccdb::keycode; // For key input
@@ -72,8 +72,8 @@ pub fn main() {
     terminal::set_terminal_size(50, 20); // change terminal size
 
     // create 2 buttons and add them to the ui component
-    let button = ui::button::new(0, "test");
-    let button2 = ui::button::new(1, "test2");
+    let button = ui::Button::new(0, "test");
+    let button2 = ui::Button::new(1, "test2");
 
     let mut ui = ui::UI::new();
     ui.buttons.push(button);
@@ -92,13 +92,13 @@ pub fn main() {
         ui.rend(); // render the ui
         match ui.buttons[0].get_status() {
             // getting if a button is pressed down or hoverd over or not
-            ui::button_action::Press => {
+            ui::ButtonAction::Press => {
                 println!("yes");
             }
-            ui::button_action::Hover => {
+            ui::ButtonAction::Hover => {
                 println!("maybe");
             }
-            ui::button_action::Idle => {
+            ui::ButtonAction::Idle => {
                 println!("no not");
             }
             _ => {}

@@ -15,7 +15,7 @@ pub mod keyin;
 pub mod terminal;
 #[path = "libs/sys/sys.rs"]
 mod sys;
-#[path = "libs/sys/spif/escape.rs"]
+#[path = "libs/escape/escape.rs"]
 pub mod escape;
 
 // ! map

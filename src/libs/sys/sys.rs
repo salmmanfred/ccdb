@@ -2,7 +2,7 @@
 
 
 #[cfg(windows)]
-#[path = "spif/windows.rs"]
+#[path = "windows.rs"]
 pub mod windows;
 
 
