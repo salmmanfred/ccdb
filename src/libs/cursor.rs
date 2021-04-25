@@ -1,24 +1,23 @@
 //! rust side of the c script
 
-extern {
-    fn moves(x:usize,y:usize);
+extern "C" {
+    fn moves(x: usize, y: usize);
     fn clears();
     fn hide();
 }
 
-
-pub fn gotoxy(x:usize,y:usize){
+pub fn gotoxy(x: usize, y: usize) {
     unsafe {
-        moves(x,y);
+        moves(x, y);
     }
 }
-pub fn clear(){
-    unsafe{
+pub fn clear() {
+    unsafe {
         clears();
     }
 }
-pub fn hide_cursor(){
-    unsafe{
+pub fn hide_cursor() {
+    unsafe {
         hide();
     }
 }
