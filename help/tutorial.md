@@ -52,7 +52,7 @@ pub fn main() {
     };
 
     let mut a = x.setup(); // setup the Core
-    f.load_map(map1); //load a map from a map struct
+    f.load_map(map1.clone()); //load a map from a map struct
     f.load_map(to_map("#####\n33333".to_string())); //if you want to make a map out of a string
     f.load_map(load("./maps/map.rmap"));
     let run = true;
@@ -78,6 +78,7 @@ pub fn main() {
     let mut ui = ui::UI::new();
     ui.buttons.push(button);
     ui.buttons.push(button2);
+    f.set_orgin(map1.clone()); // set the orgin
 
     loop {
         f.return_to_orgin(); // use this if you want to return to the orgin
@@ -150,8 +151,6 @@ pub fn main() {
         }
     }
 }
-
-
 
 ```  
   
