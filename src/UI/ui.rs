@@ -4,46 +4,46 @@ extern "C" {
     fn GetPosCurX() -> usize;
     fn GetPosCurY() -> usize;
 }
-pub enum button_action {
+pub enum ButtonAction {
     Press,
     Idle,
     Hover,
 }
 
-pub struct button {
+pub struct Button {
     pub text: String,
     pub pos: i64,
     imsel: bool, // if the button is pressed down
     pub hover: bool,
 }
-impl button {
-    pub fn new(y: i64, text: &str) -> button {
-        button {
+impl Button {
+    pub fn new(y: i64, text: &str) -> Button {
+        Button {
             text: text.to_string(),
             pos: y,
             imsel: false,
             hover: false,
         }
     }
-    pub fn get_status(&mut self) -> button_action {
+    pub fn get_status(&mut self) -> ButtonAction {
         //gets the status
 
         if self.imsel {
             self.imsel = false;
-            return button_action::Press;
+            return ButtonAction::Press;
         }
 
         if self.hover {
             self.hover = false;
 
-            return button_action::Hover;
+            return ButtonAction::Hover;
         }
-        return button_action::Idle;
+        return ButtonAction::Idle;
     }
 }
 
 pub struct UI {
-    pub buttons: Vec<button>,
+    pub buttons: Vec<Button>,
     size: [i64; 2],
     //controls: [usize; 3],
     index: i64,

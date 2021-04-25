@@ -1,4 +1,4 @@
-use std::process::Command;
+use crate::escape;
 
 extern "C" {
     fn getwinsizeROW() -> usize;
@@ -13,14 +13,12 @@ pub fn get_terminal_size() -> [usize; 2] {
     }
     return x;
 }
+
+pub fn set_terminal_name(name: &str){
+    println!("\x1B]30;{}\0",name);
+}
 pub fn set_terminal_size(x: usize, y: usize) {
-    //mode con:cols=80 lines=100
-    let output = if cfg!(target_os = "windows") {
-        Command::new("cmd")
-            .args(&["/C", &format!("mode con:cols={} lines={}", x, y)])
-            .output()
-            .expect("failed to execute process")
-    } else {
-        panic!("This function is not yet supported on linux!");
-    };
+
+    print!("\x1B[8;{};{}t",y,x);
+    
 }

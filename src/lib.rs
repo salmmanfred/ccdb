@@ -13,6 +13,10 @@ pub mod keycode;
 pub mod keyin;
 #[path = "libs/terminal.rs"]
 pub mod terminal;
+#[path = "libs/sys/sys.rs"]
+mod sys;
+#[path = "libs/sys/spif/escape.rs"]
+pub mod escape;
 
 // ! map
 #[path = "map/loader.rs"]
@@ -35,35 +39,6 @@ pub mod physics;
 #[path = "UI/ui.rs"]
 pub mod ui;
 
-pub enum orders {
-    rend,
-    ui,
-    keyboard,
-    misc,
-}
 
-pub struct order {
-    ex: i64,
-}
-impl order {
-    pub fn new() -> order {
-        order { ex: 0 }
-    }
-    pub fn next(&mut self) -> orders {
-        if self.ex == 0 {
-            return orders::rend;
-        }
-        if self.ex == 1 {
-            return orders::ui;
-        }
-        if self.ex == 2 {
-            return orders::keyboard;
-        }
-        if self.ex == 4 {
-            self.ex = 0;
-        }
-        self.ex += 1;
 
-        return orders::misc;
-    }
-}
+

@@ -14,6 +14,7 @@ keywords = ["gamedev", "graphics","multithreading","engine","terminal"]
 
 [dependencies]
 openfile = "1.1.0"
+winapi-util = "0.1.5"
 
 [build-dependencies]
 cc = "1.0"
