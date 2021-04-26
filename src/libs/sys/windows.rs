@@ -1,3 +1,5 @@
+
+
 #[cfg(windows)]
 pub fn enable_virtual_terminal_processing() {
     use winapi_util::console::Console;

@@ -4,11 +4,7 @@ use crate::escape;
 use crate::sys;
 
 
-extern "C" {
-    fn moves(x: usize, y: usize);
-    fn clears();
-    fn hide();
-}
+
 
 pub fn gotoxy(x: i64, y: i64) {
     check_win();
