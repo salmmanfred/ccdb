@@ -34,7 +34,7 @@ pub fn call2() -> usize{
         if cfg!(linux){
             #[cfg(linux)]
             {
-                return 0;
+                return getkeyL();
             }
         }else{
             return 0;
