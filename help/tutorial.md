@@ -109,7 +109,7 @@ pub fn main() {
         f.sprite[0].move_xy(1, 0);
 
         //standard key input system
-        if keyin::key_down() {
+        
             match keyin::get_key() {
                 keycode::A => {
                     f.x[player as usize] -= 1;
@@ -148,7 +148,7 @@ pub fn main() {
                 }
                 _ => {}
             }
-        }
+        
     }
 }
 
