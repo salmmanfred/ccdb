@@ -1,5 +1,3 @@
-
-
 #[cfg(windows)]
 pub fn enable_virtual_terminal_processing() {
     use winapi_util::console::Console;
@@ -11,4 +9,3 @@ pub fn enable_virtual_terminal_processing() {
         let _ = term.set_virtual_terminal_processing(true);
     }
 }
-

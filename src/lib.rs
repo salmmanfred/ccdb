@@ -7,16 +7,16 @@ pub mod acore;
 // ! libs
 #[path = "libs/cursor.rs"]
 pub mod cursor;
+#[path = "libs/escape/escape.rs"]
+pub mod escape;
 #[path = "libs/keycode.rs"]
 pub mod keycode;
 #[path = "libs/keyin.rs"]
 pub mod keyin;
-#[path = "libs/terminal.rs"]
-pub mod terminal;
 #[path = "libs/sys/sys.rs"]
 mod sys;
-#[path = "libs/escape/escape.rs"]
-pub mod escape;
+#[path = "libs/terminal.rs"]
+pub mod terminal;
 
 // ! map
 #[path = "map/loader.rs"]
@@ -39,20 +39,17 @@ pub mod physics;
 #[path = "UI/ui.rs"]
 pub mod ui;
 
-
 #[path = "test/test.rs"]
 mod test;
 #[cfg(test)]
-mod tests{
+mod tests {
     use crate::test;
     #[test]
-    fn test(){
-        
+    fn test() {
         test::t();
     }
     #[test]
-    fn test2(){
+    fn test2() {
         test::check_const();
     }
 }
-

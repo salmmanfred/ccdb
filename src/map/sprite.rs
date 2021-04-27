@@ -1,4 +1,4 @@
-use crate::loader;
+//use crate::loader;
 
 pub struct sprite {
     pub chars: Vec<String>,
@@ -6,10 +6,10 @@ pub struct sprite {
     pub y: Vec<i64>,
 }
 impl sprite {
-    pub fn move_xy(&mut self, modifX: i64, modifY: i64) {
+    pub fn move_xy(&mut self, modif_x: i64, modif_y: i64) {
         for x in 0..self.x.len() {
-            self.x[x] += modifX;
-            self.y[x] += modifY;
+            self.x[x] += modif_x;
+            self.y[x] += modif_y;
         }
     }
     pub fn set_xy(&mut self, x: i64, y: i64) {

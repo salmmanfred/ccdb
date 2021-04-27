@@ -10,8 +10,8 @@ pub fn thread_check(threads: i8, lenght: i64) {
     }
 }
 
-pub fn check_win(){
-    if cfg!(windows){
+pub fn check_win() {
+    if cfg!(windows) {
         #[cfg(windows)]
         sys::windows::enable_virtual_terminal_processing();
     }

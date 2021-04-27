@@ -25,7 +25,7 @@ fn renderphys(screen: map, physobj: Vec<i64>, g_drag: i64) -> map {
 
     for i in physobj {
         // just adds physics to all objects
-        for x in 0..g_drag {
+        for _ in 0..g_drag {
             mp.y[i as usize] += 1;
             if collision::get_collision(i as usize, &mut mp) {
                 mp.y[i as usize] -= 1;

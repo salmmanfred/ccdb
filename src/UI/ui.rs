@@ -1,9 +1,5 @@
 use crate::keyin;
 
-extern "C" {
-    fn GetPosCurX() -> usize;
-    fn GetPosCurY() -> usize;
-}
 pub enum ButtonAction {
     Press,
     Idle,
@@ -48,7 +44,7 @@ pub struct UI {
     //controls: [usize; 3],
     index: i64,
     ent: bool, // if enter is pressed
-    mt: i64,
+               // mt: i64,
 }
 impl UI {
     pub fn new() -> UI {
@@ -58,7 +54,7 @@ impl UI {
             //controls: [up,down,select],
             index: 0,
             ent: false,
-            mt: 0,
+            // mt: 0,
         }
     }
     pub fn ups(&mut self) {
@@ -90,8 +86,8 @@ impl UI {
         self.ent = false;
 
         let mut i = 0;
-        let mut sele = false;
-        for x in 0..10 {
+        //let mut sele = false;
+        for _ in 0..10 {
             // stupid solution to a stupid issue
             self.ups();
         }
@@ -145,11 +141,11 @@ impl UI {
 /*pub fn makebutton(x: i64,y: i64,text: &str)-> button{
 
 }*/
-fn rendT() {
+/*fn rendT() {
     unsafe {
         GetPosCurX();
         GetPosCurY();
 
         //println!("o{},{}                 ",,GetPosCurY());
     }
-}
+}*/

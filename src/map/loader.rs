@@ -1,7 +1,7 @@
 use crate::sprite;
 use openfile;
-use std::result;
-use std::{fs, io};
+use std::fs;
+
 #[derive(Clone)]
 pub struct map {
     pub chars: Vec<String>,
@@ -60,13 +60,13 @@ pub fn loadvec(file: Vec<String>) -> map {
 pub fn to_map(str: String) -> map {
     //makes a string into a map
     let sttr = str;
-    let mut vecStr: Vec<String> = Vec::new();
+    let mut vec_str: Vec<String> = Vec::new();
     let vecsttr: Vec<&str> = sttr.split("\n").collect();
     for x in vecsttr {
-        vecStr.push(x.to_string());
+        vec_str.push(x.to_string());
     }
 
-    loadvec(vecStr)
+    loadvec(vec_str)
 }
 
 pub struct folder {

@@ -105,7 +105,7 @@ impl Cort {
     pub fn render_blank(&mut self, screen: &mut Screen) {
         let map = screen.gmap();
         screen.load_map(loader::to_map(" \n".to_string()));
-        screen.run(self.lines, self.char_x_line,self);
+        screen.run(self.lines, self.char_x_line, self);
         screen.x = map.x;
         screen.y = map.y;
         screen.chars = map.chars;
@@ -219,13 +219,11 @@ impl Screen {
         self.chars = map.chars.clone();
         //self.orgin = map.clone(); // set the orgin
     }
-    pub fn set_orgin(&mut self,map: loader::map){
+    pub fn set_orgin(&mut self, map: loader::map) {
         self.orgin = map;
     }
     pub fn return_to_orgin(&mut self) {
-       
         self.load_map(self.orgin.clone());
-        
     }
     pub fn cgmap(&self) -> loader::map {
         // clean get map

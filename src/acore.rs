@@ -338,13 +338,11 @@ impl Screen {
         self.chars = map.chars.clone();
         //self.orgin = map.clone(); // set the orgin
     }
-    pub fn set_orgin(&mut self,map: loader::map){
+    pub fn set_orgin(&mut self, map: loader::map) {
         self.orgin = map;
     }
     pub fn return_to_orgin(&mut self) {
-       
         self.load_map(self.orgin.clone());
-        
     }
     pub fn cgmap(&self) -> loader::map {
         // clean get map
