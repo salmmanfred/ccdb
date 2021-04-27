@@ -9,7 +9,7 @@ pub struct map {
     pub y: Vec<i64>,
 }
 impl map {
-    pub fn makeSprite(&self) -> sprite::sprite {
+    pub fn to_sprite(&self) -> sprite::sprite {
         sprite::sprite {
             chars: self.chars.clone(),
             x: self.x.clone(),
@@ -98,7 +98,7 @@ impl folder {
                     if self.maps[x].x.len() <= 0 {
                         return Err("Could not be found".to_string());
                     }
-                    return Ok(self.maps[x].makeSprite());
+                    return Ok(self.maps[x].to_sprite());
                 }
             }
         }

@@ -40,5 +40,19 @@ pub mod physics;
 pub mod ui;
 
 
-
+#[path = "test/test.rs"]
+mod test;
+#[cfg(test)]
+mod tests{
+    use crate::test;
+    #[test]
+    fn test(){
+        
+        test::t();
+    }
+    #[test]
+    fn test2(){
+        test::check_const();
+    }
+}
 
