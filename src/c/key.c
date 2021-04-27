@@ -9,19 +9,14 @@
         
         int key_code = _getch();
                 //printf("%d\n", key_code);
-
-
         return (char) key_code;
         
-
     }*/
 
     /*int keydownd(){
-
         if (_kbhit()){
             return 1;
         }
-
         return 0;
     }*/
     char getkey(){
@@ -80,5 +75,3 @@
     
     }
 #endif
-
-//this gets the keycodes

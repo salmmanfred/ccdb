@@ -1,7 +1,9 @@
 //! rust side of the c script
 //#[link(name="key", kind="static")]
 
-
+extern{
+    fn getkey() -> usize; 
+}
 pub fn call() -> usize {
     #[cfg(windows)]
     extern{
@@ -32,7 +34,7 @@ pub fn call2() -> usize{
         if cfg!(linux){
             #[cfg(linux)]
             {
-                return getkey();
+                return 0;
             }
         }else{
             return 0;
