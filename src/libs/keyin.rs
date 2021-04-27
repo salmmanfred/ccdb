@@ -51,7 +51,7 @@ pub fn get_key() -> usize {
         return call()
     }
 
-    #[cfg(linux)]
+    #[cfg(target_os = "linux")]
     {
         return call2()
     }
