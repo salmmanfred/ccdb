@@ -98,7 +98,7 @@ pub fn t() {
 
 
 
-        if keyin::key_down() {
+        
             match keyin::get_key() {
                 keycode::A => {
                     f.x[player as usize] -= 1;
@@ -136,7 +136,7 @@ pub fn t() {
                 }
                 _ => {}
             }
-        }
+        
 
 
     

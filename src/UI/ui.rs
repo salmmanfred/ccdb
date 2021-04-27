@@ -66,7 +66,7 @@ impl UI {
 
         //if keyin::key_down(){
 
-        match keyin::safe_get_key() {
+        match keyin::get_key() {
             72 => {
                 self.index -= 1;
             }

@@ -1,35 +1,59 @@
 //! rust side of the c script
 //#[link(name="key", kind="static")]
-extern "C" {
-    fn getkeyd() -> usize;
-    fn keydownd() -> usize;
-    fn safekey() -> usize;
 
-}
 
 pub fn call() -> usize {
-    unsafe {
-        return getkeyd();
+    #[cfg(windows)]
+    extern{
+        fn getkey() -> usize; 
     }
-}
-
-pub fn key_down() -> bool {
+    
     unsafe {
-        if keydownd() == 1 {
-            return true;
-        } else {
-            return false;
+        if cfg!(windows){
+            #[cfg(windows)]
+            {
+            return getkey();
+            }
+            //return 0;
         }
     }
+    return 0;
+}
+
+pub fn call2() -> usize{
+   
+    #[cfg(linux)]
+    extern {
+        fn getkeyL() -> usize;
+    }
+
+    
+    unsafe {
+        if cfg!(linux){
+            #[cfg(linux)]
+            {
+                return getkey();
+            }
+        }else{
+            return 0;
+        }
+    }
+    return 0;
+    
 }
 
 pub fn get_key() -> usize {
     //println!("ok");
-    call()
+    #[cfg(windows)]
+    {
+        return call()
+    }
+
+    #[cfg(linux)]
+    {
+        return call2()
+    }
+
+    //return 0;
 }
-pub fn safe_get_key() -> usize {
-    // not really safe but eh
-    let mut a = 0;
-    unsafe { a = safekey() }
-    return a;
-}
+
