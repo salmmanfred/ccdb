@@ -66,7 +66,7 @@
     int getkeyL()
     {
     
-        if kbhit(){
+        if (kbhit()){
             return getchar();
         }
         return 0;
