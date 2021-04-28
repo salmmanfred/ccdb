@@ -52,8 +52,8 @@ pub fn main() {
     // get the ui started
     let mut ui = ui::UI::new();
 
-    let mut button = ui::button::new(0, "Play again");
-    let mut button2 = ui::button::new(1, "Quit");
+    let mut button = ui::Button::new(0, "Play again");
+    let mut button2 = ui::Button::new(1, "Quit");
 
     ui.buttons.push(button);
     ui.buttons.push(button2);
@@ -103,7 +103,7 @@ pub fn main() {
             ui.rend(); // render the ui
             match ui.buttons[0].get_status() {
                 // getting if a button is pressed down or hoverd over or not
-                ui::button_action::Press => {
+                ui::ButtonAction::Press => {
                     x = 10;
                     y = 3;
                     snake = vec![[10, 3]];
@@ -121,7 +121,7 @@ pub fn main() {
             }
             match ui.buttons[1].get_status() {
                 // getting if a button is pressed down or hoverd over or not
-                ui::button_action::Press => {
+                ui::ButtonAction::Press => {
                     break;
                 }
                 _ => {}
@@ -158,7 +158,7 @@ pub fn main() {
         }
 
         // keyinput stuff
-        if keyin::key_down() {
+        
             match keyin::get_key() {
                 keycode::A => {
                     change_x = -1;
@@ -179,7 +179,7 @@ pub fn main() {
 
                 _ => {}
             }
-        }
+        
     }
 }
 fn new_apple() -> [i64; 2] {
