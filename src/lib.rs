@@ -32,6 +32,8 @@ pub mod colour;
 // ! physics
 #[path = "physics/collision.rs"]
 pub mod collision;
+#[path = "physics/particle.rs"]
+pub mod particle;
 #[path = "physics/physics.rs"]
 pub mod physics;
 

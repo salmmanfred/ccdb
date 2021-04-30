@@ -23,6 +23,16 @@ impl map {
             y: Vec::new(),
         }
     }
+    pub fn find_all_of_X(&self, ch: String) -> Vec<i64> {
+        // returns a vector of the position of all instanses of a certain character
+        let mut all: Vec<i64> = Vec::new();
+        for x in 0..self.chars.len() {
+            if self.chars[x] == ch {
+                all.push(x as i64);
+            }
+        }
+        all
+    }
 }
 // this parses a text file into a map
 

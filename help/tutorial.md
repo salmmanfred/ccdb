@@ -68,7 +68,7 @@ pub fn main() {
     f.sprite[0].set_xy(2, -2); // set the sprites position
     f.sprite[0].move_xy(5, 0); // move the sprite
 
-    let x = terminal::get_terminal_size(); // get the terminal size
+    //let x = terminal::get_terminal_size(); // get the terminal size
     terminal::set_terminal_size(50, 20); // change terminal size
 
     // create 2 buttons and add them to the ui component
