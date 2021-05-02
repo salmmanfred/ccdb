@@ -41,3 +41,5 @@ v1.1.0: Terminal control  DONE
 v1.2.0: UI DONE  
 v1.3.0: Quality update  DONE  
 v1.4.0: Fixing linux support  DONE  
+v1.5.0: Water physics  DONE  
+v1.6.0: Smoke physics  

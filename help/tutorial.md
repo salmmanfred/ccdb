@@ -8,7 +8,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
   
 ```rust  
 extern crate ccdb;
-use ccdb::bcore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
+use ccdb::acore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
 use ccdb::collision; // for collision
 use ccdb::cursor; // for moving the cursor
 use ccdb::keycode; // For key input
@@ -18,6 +18,7 @@ use ccdb::loader::{load, map, to_map}; // this is the loader which makes it so y
 use ccdb::sprite; // for sprites
 use ccdb::terminal;
 use ccdb::ui; // ui library
+use ccdb::particle;
 
 pub fn main() {
     cursor::clear(); // clears the Screen
@@ -51,8 +52,15 @@ pub fn main() {
         orgin: map::new(),
     };
 
-    let mut a = x.setup(); // setup the Core
+    let mut water = particle::water{ // create the water struct 
+        droplets: Vec::new(),//leave this empty
+        chars: "W".to_string(),// the character the water is based of off.
+    };
+    
+
+   let mut a = x.setup(); // setup the Core
     f.load_map(map1.clone()); //load a map from a map struct
+    water.collect_drop(f.gmap()); // after you have loaded the map you can get started adding the droplets.
     f.load_map(to_map("#####\n33333".to_string())); //if you want to make a map out of a string
     f.load_map(load("./maps/map.rmap"));
     let run = true;
@@ -68,7 +76,7 @@ pub fn main() {
     f.sprite[0].set_xy(2, -2); // set the sprites position
     f.sprite[0].move_xy(5, 0); // move the sprite
 
-    //let x = terminal::get_terminal_size(); // get the terminal size
+   // let x = terminal::get_terminal_size(); // get the terminal size
     terminal::set_terminal_size(50, 20); // change terminal size
 
     // create 2 buttons and add them to the ui component
@@ -88,8 +96,12 @@ pub fn main() {
         cursor::hide_cursor();
 
         println!("{}", a.render(&mut f)); //render the entire Screen
-
+        f.load_map(water.run(f.gmap())); // to render the water just must give it the current map from the screen by doing screen.gmap(); 
+        // then you can load the map that it returns straight into the screen or store it for later use. 
         ui.rend(); // render the ui
+
+
+
         match ui.buttons[0].get_status() {
             // getting if a button is pressed down or hoverd over or not
             ui::ButtonAction::Press => {
@@ -151,6 +163,7 @@ pub fn main() {
         
     }
 }
+
 
 ```  
   

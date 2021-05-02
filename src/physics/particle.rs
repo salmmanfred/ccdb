@@ -46,6 +46,14 @@ impl water {
         }
         return -1;
     }
+    pub fn react(&mut self, pos: i64){
+        let find_pos = self.find_in_drop(pos);
+        if find_pos == -1{
+            
+        }else{
+            self.droplets[find_pos as usize].forceDown = true;
+        }
+    }
 
     pub fn run(&mut self, o: loader::map) -> loader::map {
         let mut screen = o;
@@ -61,7 +69,7 @@ impl water {
                 side = true;
             }
             screen.y[mat.pos as usize] -= 1;
-           
+
 
             let vl = mat.vel;
             for p in 0..vl {
@@ -75,35 +83,30 @@ impl water {
                         if mat.vel >= 3{
                             fake_drop[find_pos as usize].forceDown = true;
                         }
-                       
+
                         mat.vel = (mat.vel.clone() as f64 * CHANGE).floor() as i64;
-                       
+
 
                     }
                     //println!("{}",mat.forceDown);
 
-                   
-
                     break;
                 }
             }
-            
+
             //push it to the side or up if it cant go down
             if side {
                 screen.x[mat.pos as usize] += 1;
                 let pos = collision::find_collision(mat.pos as usize, &screen);
 
                 if pos != -1 {
-                 
-                    
                     if mat.forceDown {
                         let find_pos = self.find_in_drop(pos);
 
                         if find_pos != -1 {
                             screen.y[pos as usize] -= UPPOW;
-                            fake_drop[find_pos as usize].vel = 1;
+                            fake_drop[find_pos as usize].vel = 0;
                         }
-                   
 
                     }
 
@@ -113,18 +116,18 @@ impl water {
                         if mat.forceDown {
                             let find_pos = self.find_in_drop(pos);
                             if find_pos != -1 {
-                                screen.y[pos as usize] -= UPPOW;
-                                fake_drop[find_pos as usize].vel = 1;
+                                //screen.y[pos as usize] -= UPPOW;
+                                fake_drop[find_pos as usize].vel = 0;
                             }
                            // mat.forceDown = false;
 
-                            screen.y[mat.pos as usize] -= UPPOW;
+                           //x screen.y[mat.pos as usize] -= UPPOW;
+                        }else{
+                            screen.x[mat.pos as usize] += 1;
                         }
-
-                        screen.x[mat.pos as usize] += 1;
                     }
                 }
-                if mat.vel >= 1 {
+                /*if mat.vel >= 1 {
                     for p in 0..mat.vel {
                         screen.y[mat.pos as usize] -= 1;
                         if collision::get_collision(mat.pos as usize, &screen) {
@@ -133,7 +136,7 @@ impl water {
                         }
                     }
                     mat.vel = 0;
-                }
+                }*/
             }
 
             fake_drop[x] = mat;

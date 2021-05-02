@@ -8,7 +8,7 @@ use crate::loader::{load, map, to_map}; // this is the loader which makes it so 
 use crate::sprite; // for sprites
 use crate::terminal;
 use crate::ui;
-
+use crate::particle;
 pub fn t() {
     cursor::clear(); // clears the screen
     cursor::hide_cursor(); // hides the cursor
@@ -67,7 +67,12 @@ pub fn t() {
     //cursor::gotoxy(100,100);
     a.render(&mut f);
     //cursor::clear();
-
+    let mut water = particle::water{ // create the water struct 
+        droplets: Vec::new(),//leave this empty
+        chars: "W".to_string(),// the character the water is based of off.
+    };
+    water.collect_drop(f.gmap()); // after you have loaded the map you can get started adding the droplets.
+    water.run(f.gmap());
     ui.rend();
 
     match ui.buttons[0].get_status() {
