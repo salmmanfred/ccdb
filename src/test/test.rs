@@ -5,10 +5,10 @@ use crate::keycode; // For key input
 use crate::keyin; // For key input
 use crate::loader;
 use crate::loader::{load, map, to_map}; // this is the loader which makes it so you can load a map from file or load a map from string
+use crate::particle;
 use crate::sprite; // for sprites
 use crate::terminal;
 use crate::ui;
-use crate::particle;
 pub fn t() {
     cursor::clear(); // clears the screen
     cursor::hide_cursor(); // hides the cursor
@@ -67,9 +67,10 @@ pub fn t() {
     //cursor::gotoxy(100,100);
     a.render(&mut f);
     //cursor::clear();
-    let mut water = particle::water{ // create the water struct 
-        droplets: Vec::new(),//leave this empty
-        chars: "W".to_string(),// the character the water is based of off.
+    let mut water = particle::water {
+        // create the water struct
+        droplets: Vec::new(),   //leave this empty
+        chars: "W".to_string(), // the character the water is based of off.
     };
     water.collect_drop(f.gmap()); // after you have loaded the map you can get started adding the droplets.
     water.run(f.gmap());

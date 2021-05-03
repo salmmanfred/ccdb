@@ -167,10 +167,10 @@ pub fn main() {
 
 ```  
   
-## Differance between BCore and ACore  
-ACore is  Multi threaded while BCore is single threaded  
-BCore is the old algorithm for making the text  
-Their names are ACore: Banana Core, BCore: Olive Core  
+## Differance between A and B backend  
+A is  Multi threaded while BCore is single threaded  
+B is the old algorithm for making the text  
+Their names are A: Banana Backend, B: Olive Backend  
 
 ## UI  
 There is an issue where the keyboard things get really slow when using the ui    

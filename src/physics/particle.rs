@@ -46,11 +46,10 @@ impl water {
         }
         return -1;
     }
-    pub fn react(&mut self, pos: i64){
+    pub fn react(&mut self, pos: i64) {
         let find_pos = self.find_in_drop(pos);
-        if find_pos == -1{
-            
-        }else{
+        if find_pos == -1 {
+        } else {
             self.droplets[find_pos as usize].forceDown = true;
         }
     }
@@ -65,11 +64,10 @@ impl water {
             screen.y[mat.pos as usize] += 1;
             if !collision::get_collision(mat.pos as usize, &screen) {
                 mat.vel += GRAV;
-            }else{
+            } else {
                 side = true;
             }
             screen.y[mat.pos as usize] -= 1;
-
 
             let vl = mat.vel;
             for p in 0..vl {
@@ -80,13 +78,11 @@ impl water {
                     let find_pos = self.find_in_drop(find);
                     if find_pos != -1 {
                         // fake_drop[find_pos as usize].vel = mat.vel;
-                        if mat.vel >= 3{
+                        if mat.vel >= 3 {
                             fake_drop[find_pos as usize].forceDown = true;
                         }
 
                         mat.vel = (mat.vel.clone() as f64 * CHANGE).floor() as i64;
-
-
                     }
                     //println!("{}",mat.forceDown);
 
@@ -107,7 +103,6 @@ impl water {
                             screen.y[pos as usize] -= UPPOW;
                             fake_drop[find_pos as usize].vel = 0;
                         }
-
                     }
 
                     screen.x[mat.pos as usize] -= 2;
@@ -119,10 +114,10 @@ impl water {
                                 //screen.y[pos as usize] -= UPPOW;
                                 fake_drop[find_pos as usize].vel = 0;
                             }
-                           // mat.forceDown = false;
+                            // mat.forceDown = false;
 
-                           //x screen.y[mat.pos as usize] -= UPPOW;
-                        }else{
+                            //x screen.y[mat.pos as usize] -= UPPOW;
+                        } else {
                             screen.x[mat.pos as usize] += 1;
                         }
                     }

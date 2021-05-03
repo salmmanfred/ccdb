@@ -1,4 +1,4 @@
-//! Banana core
+//! Banana backend
 // ok sure this is slower but damn its much more fun to work on this
 use crate::loader;
 use std::time::Duration;

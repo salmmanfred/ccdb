@@ -1,8 +1,13 @@
-// ! Olive core
+// ! Olive backend
+#[path = "backend/b.rs"]
+mod b;
 pub mod bcore;
-
-// ! Banana core
+// ! Banana backend
+#[path = "backend/a.rs"]
+mod a;
 pub mod acore;
+// ! core
+pub mod core;
 
 // ! libs
 #[path = "libs/cursor.rs"]
@@ -41,6 +46,7 @@ pub mod physics;
 #[path = "UI/ui.rs"]
 pub mod ui;
 
+// ! TEST
 #[path = "test/test.rs"]
 mod test;
 #[cfg(test)]

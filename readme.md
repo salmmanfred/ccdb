@@ -1,6 +1,7 @@
 # ccdb:  The cmd game engine  
 (Thats also multi threaded)  
   
+  
 # How to use  
   
 [Tutorial](https://github.com/salmmanfred/ccdb/blob/master/help/tutorial.md)
@@ -42,4 +43,5 @@ v1.2.0: UI DONE
 v1.3.0: Quality update  DONE  
 v1.4.0: Fixing linux support  DONE  
 v1.5.0: Water physics  DONE  
-v1.6.0: Smoke physics  
+v1.6.0: Change how the core system works  
+v1.7.0: Smoke physics  
