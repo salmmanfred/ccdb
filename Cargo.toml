@@ -1,6 +1,6 @@
 [package]
 name = "ccdb"
-version = "1.5.0"
+version = "1.6.0"
 authors = ["TheSlam <32799244+salmmanfred@users.noreply.github.com>"]
 edition = "2018"
 links = "./src/c/"
@@ -10,6 +10,7 @@ repository = "https://github.com/salmmanfred/ccdb"
 description = "A small terminal based game engine"
 readme = "README.md"
 keywords = ["gamedev", "graphics","multithreading","engine","terminal"]
+exclude = ["./depric/"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]

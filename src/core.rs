@@ -1,7 +1,5 @@
 use crate::a;
-use crate::acore;
 use crate::b;
-use crate::bcore;
 
 // ! core
 use crate::loader;
@@ -17,6 +15,12 @@ use std::time::Instant;
 
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
+#[derive(Clone)]
+pub enum backend{
+    a,
+    b,
+    n,
+}
 //this is the core used for things like declaring the line lenght and amount of lines
 pub struct Core {
     pub name: String,
@@ -26,7 +30,7 @@ pub struct Core {
     pub debug: bool,
     pub threads: i8,
     pub output_string: bool,
-    pub backend: i8,
+    pub backend: backend,
 }
 // this is what core "compiles" into so that the core can use the data easier
 pub struct Cort {
@@ -43,7 +47,7 @@ pub struct Cort {
     pub renderd: String,
     pub output_string: bool,
     pub extime: i64,
-    backend: i8,
+    backend: backend,
 }
 
 // Screen is the Screen which stores the current map data
@@ -89,7 +93,7 @@ impl Core {
             renderd: "".to_string(),
             output_string: self.output_string,
             extime: 0,
-            backend: self.backend,
+            backend: self.backend.clone(),
         }
     }
 }
@@ -122,6 +126,7 @@ impl Cort {
 
         }
         // just because i found it better this way.
+
         if self.output_string {
             return self.renderd.clone();
         } else {
@@ -168,8 +173,12 @@ impl Cort {
 impl Screen {
     pub fn run(&self, cort: &mut Cort) -> loader::map {
         match cort.backend {
-            0 => return a::run(self, cort),
-            1 => return b::run(self, cort.lines, cort.char_x_line, cort),
+            backend::a => return a::run(self, cort),
+            backend::b => return b::run(self, cort.lines, cort.char_x_line, cort),
+            backend::n => {
+                println!("no backend selected");
+                return self.gmap();
+            }
             _ => {
                 panic!("NO BACKEND FOUND")
             }

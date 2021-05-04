@@ -1,5 +1,4 @@
-use crate::acore;
-use crate::bcore;
+
 use crate::collision;
 use crate::loader;
 
@@ -8,10 +7,7 @@ const GRAV: i64 = 1;
 const CHANGE: f64 = 0.4;
 const UPPOW: i64 = 1;
 
-pub enum aorb_screen {
-    acore(acore::Screen),
-    bcore(bcore::Screen),
-}
+
 #[derive(Clone)]
 pub struct droplet {
     pub pos: i64,

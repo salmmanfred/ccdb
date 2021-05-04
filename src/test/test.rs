@@ -1,4 +1,4 @@
-use crate::acore::{Core, Screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them
+use crate::core::{Core, Screen,backend}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them
 use crate::collision; // for collision
 use crate::cursor; // for moving the cursor
 use crate::keycode; // For key input
@@ -23,6 +23,7 @@ pub fn t() {
         debug: true,
         threads: 10,
         output_string: false,
+        backend: backend::a,
     };
 
     let mut f = Screen {
@@ -126,9 +127,9 @@ pub fn t() {
     }
 }
 pub fn check_const() {
-    use crate::acore;
-    use crate::bcore;
-    let x = acore::Core {
+    use crate::core;
+ ;
+    let x = core::Core {
         name: "Test project".to_string(),
         desc: " - A test project".to_string(),
         line_lenght: 40,
@@ -136,9 +137,11 @@ pub fn check_const() {
         debug: true,
         threads: 10,
         output_string: false,
+        backend: backend::b,
+
     };
 
-    let mut f = acore::Screen {
+    let mut f = core::Screen {
         chars: vec!["0".to_string(), "1".to_string()],
         x: vec![1, 2],
         y: vec![1, 2],
@@ -148,7 +151,7 @@ pub fn check_const() {
     };
     let mut build_a = x.setup();
 
-    let x2 = bcore::Core {
+    let x2 = core::Core {
         name: "Test project".to_string(),
         desc: " - A test project".to_string(),
         line_lenght: 40,
@@ -156,9 +159,10 @@ pub fn check_const() {
         debug: true,
         threads: 10,
         output_string: false,
+        backend: backend::a,
     };
 
-    let mut s = bcore::Screen {
+    let mut s = core::Screen {
         chars: vec!["0".to_string(), "1".to_string()],
         x: vec![1, 2],
         y: vec![1, 2],

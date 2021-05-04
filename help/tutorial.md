@@ -8,7 +8,7 @@ SOME FEATURES ARE ONLY TESTED ON WINDOWS THIS INCLUDES KEYIN AND CURSOR!(these a
   
 ```rust  
 extern crate ccdb;
-use ccdb::acore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
+use ccdb::core::{Core, Screen,backend}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
 use ccdb::collision; // for collision
 use ccdb::cursor; // for moving the cursor
 use ccdb::keycode; // For key input
@@ -40,6 +40,7 @@ pub fn main() {
         debug: true,                           //debug
         threads: 4,                            // ammount of threads
         output_string: false, // if you want the output in string form or it just to printed out to the console directly
+        backend: backend::a, // there are also backend::b and backend::n (which is null)
     };
 
     let mut f = Screen {
@@ -56,11 +57,11 @@ pub fn main() {
         droplets: Vec::new(),//leave this empty
         chars: "W".to_string(),// the character the water is based of off.
     };
+    water.collect_drop(f.gmap()); // after you have loaded the map you can get started adding the droplets.
     
 
    let mut a = x.setup(); // setup the Core
     f.load_map(map1.clone()); //load a map from a map struct
-    water.collect_drop(f.gmap()); // after you have loaded the map you can get started adding the droplets.
     f.load_map(to_map("#####\n33333".to_string())); //if you want to make a map out of a string
     f.load_map(load("./maps/map.rmap"));
     let run = true;
@@ -163,6 +164,7 @@ pub fn main() {
         
     }
 }
+
 
 
 ```  
