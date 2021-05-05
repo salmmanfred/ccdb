@@ -1,4 +1,3 @@
-
 use crate::collision;
 use crate::loader;
 
@@ -6,7 +5,6 @@ const BOUNCE: i64 = 1;
 const GRAV: i64 = 1;
 const CHANGE: f64 = 0.4;
 const UPPOW: i64 = 1;
-
 
 #[derive(Clone)]
 pub struct droplet {

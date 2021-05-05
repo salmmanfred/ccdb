@@ -1,13 +1,6 @@
 use crate::core::{Cort, Screen};
 use crate::loader;
-use std::time::Duration;
-use std::{thread, time};
 //use crate::colour;
-use crate::physics;
-use crate::sprite;
-use std::sync::mpsc::channel;
-use std::sync::{Arc, Mutex};
-use std::time::Instant;
 
 pub fn run(screen: &Screen, size: i64, size2: i64, Cort: &mut Cort) -> loader::map {
     let mut line: String = "".to_string();

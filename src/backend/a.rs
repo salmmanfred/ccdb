@@ -1,30 +1,18 @@
 use crate::core::{Cort, Screen};
 use crate::loader;
-use std::time::Duration;
-use std::{thread, time};
-//use crate::colour;
-use crate::check::thread_check;
-use crate::physics;
-use crate::sprite;
 use std::sync::mpsc::channel;
 use std::sync::{Arc, Mutex};
 use std::time::Instant;
+use std::{thread, time};
 
 pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
     let now = Instant::now();
 
-    // = Vec::with_capacity(10);
     //parses the data correctly so that it gets outputed correctly
     //getting the correct data and gets how many threads we need and the y size and x size
     let thr = Cort.thr;
     let size = Cort.lines;
     let size2 = Cort.char_x_line;
-
-    let mut aot = 0;
-    let mut sso = 0;
-
-    //let (tx, rx) = mpsc::channel();
-    aot += 1;
 
     let mut hands: Vec<std::thread::JoinHandle<()>> = Vec::new(); //stores the threads
 
@@ -50,8 +38,8 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
     for P in 0..thr as i64 {
         let (data, tx) = (Arc::clone(&megadata[P as usize]), tx.clone()); //get the correct mutex
 
-        sso += 1; // creates all the variables since they are move they need to be re defined
-        let threadsize = thr;
+        // creates all the variables since they are move they need to be re defined
+        //let threadsize = thr;
 
         let mut chars = charss.clone();
         let mut xx = xxx.clone();
@@ -88,10 +76,6 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
                 }
             }
 
-            //println!(" po{},{}",biggest,chars.len());
-
-            //println!("f{},{}",smallest,biggest);
-
             for y in chunk1..chunk2 {
                 // this is where the magic happens
                 let mut row = "".to_string();
@@ -109,18 +93,8 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
                 for x in 0..size2 {
                     let mut ch = " ";
                     if donesofar <= vectorY.len() {
-                        //println!("so{},{}",chars.len(),vectorY.len());
-                        /* for o in vectorY.iter(){
-                            let o = o.to_owned() as usize;
-                            if x == xx[o]{
-                                donesofar += 1;
-                                ch = &chars[o];
-                                break;
-
-                            }
-                        }*/
                         for i in 0..vectorX.len() {
-                            // finds the correct char?
+                            // finds the correct char
 
                             if vectorX[i] == x {
                                 donesofar += 1;
@@ -130,7 +104,7 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
                             }
                         }
                     } else {
-                        //break;
+                        break;
                     }
 
                     row.push_str(&ch); // push it together to a single line
@@ -151,9 +125,6 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
         }));
     }
 
-    //}
-    //hands.push(thr);
-
     for thr in hands {
         thr.join().unwrap(); // join all threads
     }
@@ -169,7 +140,6 @@ pub fn run(screen: &Screen, Cort: &mut Cort) -> loader::map {
         println!("{}", fdata);
     }
 
-    //println!("");
     Cort.renderd = fdata;
     Cort.extime = now.elapsed().as_millis() as i64;
 

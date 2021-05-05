@@ -1,5 +1,5 @@
-use crate::core::{Core, Screen,backend}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them
 use crate::collision; // for collision
+use crate::core::{backend, Core, Screen}; // there are 2 diffrent cores there is Core and there is banana both work the same way when talking to them
 use crate::cursor; // for moving the cursor
 use crate::keycode; // For key input
 use crate::keyin; // For key input
@@ -23,7 +23,7 @@ pub fn t() {
         debug: true,
         threads: 10,
         output_string: false,
-        backend: backend::a,
+        backend: backend::A,
     };
 
     let mut f = Screen {
@@ -128,7 +128,6 @@ pub fn t() {
 }
 pub fn check_const() {
     use crate::core;
- ;
     let x = core::Core {
         name: "Test project".to_string(),
         desc: " - A test project".to_string(),
@@ -137,8 +136,7 @@ pub fn check_const() {
         debug: true,
         threads: 10,
         output_string: false,
-        backend: backend::b,
-
+        backend: backend::B,
     };
 
     let mut f = core::Screen {
@@ -159,7 +157,7 @@ pub fn check_const() {
         debug: true,
         threads: 10,
         output_string: false,
-        backend: backend::a,
+        backend: backend::A,
     };
 
     let mut s = core::Screen {

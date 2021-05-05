@@ -40,7 +40,7 @@ pub fn main() {
         debug: true,                           //debug
         threads: 4,                            // ammount of threads
         output_string: false, // if you want the output in string form or it just to printed out to the console directly
-        backend: backend::a, // there are also backend::b and backend::n (which is null)
+        backend: backend::A, // there are also backend::B and backend::N (which is null)
     };
 
     let mut f = Screen {

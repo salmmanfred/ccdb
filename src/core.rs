@@ -3,23 +3,19 @@ use crate::b;
 
 // ! core
 use crate::loader;
-use std::time::Duration;
 use std::{thread, time};
 //use crate::colour;
 use crate::check::thread_check;
 use crate::physics;
 use crate::sprite;
-use std::sync::mpsc::channel;
-use std::sync::{Arc, Mutex};
-use std::time::Instant;
 
 //use std::sync::{Mutex, Arc};
 //use crate::messages::{message,listen};
 #[derive(Clone)]
-pub enum backend{
-    a,
-    b,
-    n,
+pub enum backend {
+    A,
+    B,
+    N,
 }
 //this is the core used for things like declaring the line lenght and amount of lines
 pub struct Core {
@@ -73,8 +69,7 @@ impl Core {
         if self.debug {
             xxs.push_str(" CCDB CORE");
         }
-       
-      
+
         thread_check(self.threads, self.lines);
         Cort {
             name_desc: xxs,
@@ -117,13 +112,10 @@ impl Cort {
         if !self.equall(Screen.gmap()) {
             // helps preformance by not rendering the same window again and again and again
             self.prevmap = Screen.run(self); // starts the Screen rendering
-
         } else {
-
             if !self.output_string {
                 println!("{}", self.renderd)
             }
-
         }
         // just because i found it better this way.
 
@@ -173,9 +165,9 @@ impl Cort {
 impl Screen {
     pub fn run(&self, cort: &mut Cort) -> loader::map {
         match cort.backend {
-            backend::a => return a::run(self, cort),
-            backend::b => return b::run(self, cort.lines, cort.char_x_line, cort),
-            backend::n => {
+            backend::A => return a::run(self, cort),
+            backend::B => return b::run(self, cort.lines, cort.char_x_line, cort),
+            backend::N => {
                 println!("no backend selected");
                 return self.gmap();
             }
@@ -184,7 +176,7 @@ impl Screen {
             }
         }
 
-       // self.gmap()
+        // self.gmap()
     }
 
     pub fn load_map(&mut self, map: loader::map) {

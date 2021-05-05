@@ -1,5 +1,5 @@
-use crate::core;
 use crate::collision;
+use crate::core;
 use crate::loader::map;
 //const Gdrag: i64 = 1;
 
@@ -9,7 +9,6 @@ pub fn render_physics(screen: &mut core::Screen, physobj: Vec<i64>, G: i64) {
     let phsob = physobj;
     screen.load_map(renderphys(map, phsob, G));
 }
-
 
 fn renderphys(screen: map, physobj: Vec<i64>, g_drag: i64) -> map {
     let mut mp = map {
