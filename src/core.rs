@@ -113,7 +113,7 @@ impl Cort {
 
         println!("{}", self.name_desc);
 
-        //physics::a_render_physics(Screen, self.physobj.clone(), self.gravity);
+        physics::render_physics(Screen, self.physobj.clone(), self.gravity);
         if !self.equall(Screen.gmap()) {
             // helps preformance by not rendering the same window again and again and again
             self.prevmap = Screen.run(self); // starts the Screen rendering
