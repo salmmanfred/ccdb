@@ -1,5 +1,5 @@
 extern crate ccdb;
-use ccdb::acore::{Core, Screen}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
+use ccdb::core::{Core, Screen,backend}; // there are 2 diffrent Cores there is Core and there is banana both work the same way when talking to them
 use ccdb::collision; // for collision
 use ccdb::cursor; // for moving the cursor
 use ccdb::keycode; // For key input
@@ -31,6 +31,7 @@ pub fn main() {
         debug: false,                              //debug
         threads: 2,                                // ammount of threads
         output_string: false, // if you want the output in string form or it just to printed out to the console directly
+        backend: backend::a,
     };
     // if the map is not loaded properly it will just say error
     let mut f = Screen {
