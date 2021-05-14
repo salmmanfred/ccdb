@@ -28,7 +28,7 @@ If you have linux it would be nice if you could test the keyin and cursor librar
 # Releases  
 [Releases](https://github.com/salmmanfred/ccdb/releases)
   
-# Upcomming  
+# Upcoming  
 [ccdb-script](https://github.com/salmmanfred/ccdb-script)  
   
 # Roadmap  
