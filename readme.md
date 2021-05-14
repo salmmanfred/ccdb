@@ -27,7 +27,10 @@ If you have linux it would be nice if you could test the keyin and cursor librar
 
 # Releases  
 [Releases](https://github.com/salmmanfred/ccdb/releases)
-
+  
+# Upcomming  
+[ccdb-script](https://github.com/salmmanfred/ccdb-script)  
+  
 # Roadmap  
 v0.2.0: Add a function to find all of a certain character or just the first one  DONE  
 v0.3.0: Being able to get the output in a string instead of the cmd   DONE  
